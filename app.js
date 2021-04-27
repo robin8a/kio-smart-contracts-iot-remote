@@ -61,7 +61,7 @@ var mk_global_users_manager_csv;
 server.listen(port, function() {
     console.log('##### INI server.listen port');
     console.log('#server.listen.port Listening on port ' + port);
-    checkAndCreateUsersZeusDB();
+    // checkAndCreateUsersZeusDB();
     
     // Reportar a los usuarios en User Manager
     // setInterval(function () {
