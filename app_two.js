@@ -42,5 +42,6 @@ device
         console.log('## device.on message Command_From_UI command_from_ui: ', command_from_ui);
         command_from_ui_result = shell.exec(command_from_ui, {silent:true}).stdout;
         console.log('## device.on message Command_From_UI command_from_ui_result: ', command_from_ui_result);
+        device.publish('topic_2', JSON.stringify(command_from_ui_result));
     }
   });
