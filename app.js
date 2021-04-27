@@ -103,7 +103,7 @@ server.listen(port, function() {
 var device = awsIot.device({
     keyPath: 'certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.private.key',
    certPath: 'certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.cert.pem',
-     caPath: 'certs/root-CA.crt',
+     caPath: 'certs/kio-smart-contracts-iot-device/root-CA.crt',
    clientId: 'kio-smart-contracts-iot-device',
        host: 'az6wto8a6h0jn-ats.iot.us-east-1.amazonaws.com',
      region: 'us-east-1',
