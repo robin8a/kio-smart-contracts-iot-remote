@@ -1,4 +1,5 @@
 var awsIot = require('aws-iot-device-sdk');
+var shell = require('shelljs');
 
 //
 // Replace the values of '<YourUniqueClientIdentifier>' and '<YourCustomEndpoint>'
