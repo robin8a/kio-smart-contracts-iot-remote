@@ -1,0 +1,24 @@
+{
+  "name": "shell",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-iot-device-sdk": "^1.0.14",
+    "csvtojson": "^2.0.8",
+    "express": "^4.14.0",
+    "knex": "^0.17.3",
+    "moment": "^2.18.1",
+    "mssql": "^5.1.0",
+    "ping": "^0.2.2",
+    "ps-tree": "^1.1.0",
+    "shelljs": "^0.7.4",
+    "socket.io": "^1.5.0",
+    "socket.io-client": "^1.5.0"
+  }
+}
