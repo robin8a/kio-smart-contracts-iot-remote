@@ -1,6 +1,26 @@
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
 
+const CardanocliJs = require("index.js");
+const os = require("os");
+const path = require("path");
+
+const dir = path.join(os.homedir(), "testnet");
+const shelleyPath = path.join(
+  os.homedir(),
+  "testnet",
+  "testnet-shelley-genesis.json"
+);
+
+const cardanocliJs = new CardanocliJs({
+  network: "testnet-magic 1097911063",
+  dir: dir,
+  shelleyGenesisPath: shelleyPath,
+  socketPath: path.join(os.homedir(), "testnet", "db", "socket"),
+});
+
+
+
 //
 // Replace the values of '<YourUniqueClientIdentifier>' and '<YourCustomEndpoint>'
 // with a unique client identifier and custom host endpoint provided in AWS IoT.
@@ -45,3 +65,5 @@ device
         device.publish('topic_2', JSON.stringify(command_from_ui_result));
     }
   });
+
+  console.log(cardanocliJs.queryTip());
