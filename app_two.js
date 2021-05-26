@@ -1,7 +1,7 @@
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
 
-const CardanocliJs = require("index.js");
+const CardanocliJs = require("./index.js");
 const os = require("os");
 const path = require("path");
 
