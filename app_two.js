@@ -74,5 +74,7 @@ device
         console.log('## device.on message Command_From_UI_Query_Tip command_from_ui_result: ', command_from_ui_query_tip);
         device.publish('topic_2', JSON.stringify(command_from_ui_query_tip));
     }
-    
+
+    device.publish('topic_2', JSON.stringify('NO COMMAND ON JSON'));
+
   });
