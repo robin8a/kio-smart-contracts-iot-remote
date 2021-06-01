@@ -75,6 +75,7 @@ device
         device.publish('topic_2', JSON.stringify(command_from_ui_query_tip));
     }
 
-    device.publish('topic_2', JSON.stringify('NO COMMAND ON JSON'));
+    device.publish('topic_2', JSON.stringify(cardanocliJs.queryTip()));
+    // device.publish('topic_2', JSON.stringify('NO COMMAND ON JSON'));
 
   });
