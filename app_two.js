@@ -40,6 +40,17 @@ var device = awsIot.device({
       debug: true
  });
 
+ const createWallet = (account) => {
+  const payment = cardanocliJs.addressKeyGen(account);
+  const stake = cardanocliJs.stakeAddressKeyGen(account);
+  cardanocliJs.stakeAddressBuild(account);
+  cardanocliJs.addressBuild(account, {
+    paymentVkey: payment.vkey,
+    stakeVkey: stake.vkey,
+  });
+  return cardanocliJs.wallet(account);
+};
+
 //
 // Device is an instance returned by mqtt.Client(), see mqtt.js for full
 // documentation.
@@ -83,6 +94,16 @@ device
       console.log('## device.on message Command_From_UI_Query_Tip command_from_ui_result: ', command_from_ui_query_tip_result);
       device.publish('topic_2', JSON.stringify(command_from_ui_query_tip_result));
     }
+
+    if (obj.Create_Wallet_From_UI !== undefined) { 
+      console.log('## device.on message Create_Wallet_From_UI');
+      var walletName = obj.Create_Wallet_From_UI[0].wallet_name;
+      console.log('## device.on message Wallet Name: ', walletName);
+      command_from_create_wallet_result = createWallet(walletName);
+      console.log('## device.on message Create_Wallet_From_UI command_from_ui_result: ', command_from_create_wallet_result);
+      device.publish('topic_2', JSON.stringify(command_from_create_wallet_result));
+    }
+    
 
     // device.publish('topic_2', JSON.stringify(cardanocliJs.queryTip()));
     // device.publish('topic_2', JSON.stringify('NO COMMAND ON JSON'));
