@@ -56,10 +56,11 @@ device
     console.log('##########################################')
     console.log('message topic payload: ', topic, payload);
     console.log('message topic payload.toString(): ', topic, payload.toString());
-    const obj = JSON.parse(payload);
+    const jsonString = JSON.parse(payload);
+    const obj = JSON.parse(jsonString);
     console.log('obj: ', obj);
     console.log('##########################################')
-    debugger
+    // debugger
     console.log('obj.Command_From_UI', obj.Command_From_UI);
     // console.log('obj.msg.Command_From_UI', obj.msg.Command_From_UI);
 
