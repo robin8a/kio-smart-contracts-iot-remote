@@ -53,7 +53,8 @@ device
 
 device
   .on('message', function(topic, payload) {
-    console.log('message', topic, payload.toString());
+    console.log('message topic payload: ', topic, payload);
+    console.log('message topic payload.toString(): ', topic, payload.toString());
     const obj = JSON.parse(payload);
 
     console.log('obj.Command_From_UI', obj.Command_From_UI);
