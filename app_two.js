@@ -77,7 +77,7 @@ device
     if (obj.Command_From_UI_Query_Tip !== undefined) {
       debugger
       console.log('## device.on message Command_From_UI_Query_Tip');
-      var command_from_ui_query_tip = obj._query_tip_Query_Tip[0].command;
+      var command_from_ui_query_tip = obj.Command_From_UI_Query_Tip[0].command;
       console.log('## device.on message Command_From_UI_Query_Tip command_from_ui: ', command_from_ui_query_tip);
       command_from_ui_query_tip_result = cardanocliJs.queryTip();
       console.log('## device.on message Command_From_UI_Query_Tip command_from_ui_result: ', command_from_ui_query_tip);
