@@ -56,6 +56,8 @@ device
     console.log('message', topic, payload.toString());
     const obj = JSON.parse(payload);
 
+    console.log('obj.Command_From_UI', obj.Command_From_UI);
+
     if (obj.Command_From_UI) {
         console.log('## device.on message Command_From_UI');
         // var command_from_ui = "sshpass -p 'C0lt3n02019$' ssh -p 2223 admin@192.168.15.1 " + obj.Command_From_UI[0].command;
