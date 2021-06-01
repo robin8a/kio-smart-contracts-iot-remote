@@ -62,7 +62,7 @@ device
 
     
 
-    // console.log('obj.Command_From_UI', obj.Command_From_UI);
+    console.log('obj.Command_From_UI', obj.Command_From_UI);
     // console.log('obj.msg.Command_From_UI', obj.msg.Command_From_UI);
 
     if (obj.Command_From_UI) {
