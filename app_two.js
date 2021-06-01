@@ -103,6 +103,16 @@ device
       console.log('## device.on message Create_Wallet_From_UI command_from_ui_result: ', command_from_create_wallet_result);
       device.publish('topic_2', JSON.stringify(command_from_create_wallet_result));
     }
+
+    if (obj.Get_Wallet_Balance_By_Name_From_UI !== undefined) { 
+      console.log('## device.on message Get_Wallet_Balance_By_Name_From_UI');
+      var walletName = obj.Get_Wallet_Balance_By_Name_From_UI[0].wallet_name;
+      console.log('## device.on message Wallet Name: ', walletName);
+      // command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance().value.lovelace;
+      command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
+      console.log('## device.on message Get_Wallet_Balance_By_Name_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
+      device.publish('topic_2', JSON.stringify(command_from_get_wallet_balance_by_name_result));
+    }
     
 
     // device.publish('topic_2', JSON.stringify(cardanocliJs.queryTip()));
