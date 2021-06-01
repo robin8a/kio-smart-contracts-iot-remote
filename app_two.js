@@ -59,7 +59,7 @@ device
     const obj = JSON.parse(payload);
     console.log('obj: ', obj);
     console.log('##########################################')
-
+    debugger
     console.log('obj.Command_From_UI', obj.Command_From_UI);
     // console.log('obj.msg.Command_From_UI', obj.msg.Command_From_UI);
 
