@@ -113,9 +113,81 @@ device
       console.log('## device.on message Get_Wallet_Balance_By_Name_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
       device.publish('topic_2', JSON.stringify(command_from_get_wallet_balance_by_name_result));
     }
+
+    if (obj.Transfer_Funds_Between_Wallets_From_UI !== undefined) { 
+      console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI');
+
+      var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
+      console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
+
+      var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[1].wallet_address_destination;
+      console.log('## device.on message Wallet Address Destination: ', walletAddressDestination);
+
+      var transactionAmount = parseFloat(obj.Transfer_Funds_Between_Wallets_From_UI[2].transaction_amount);
+      console.log('## device.on message Transaction Amount: ', transactionAmount);
+
+      //funded wallet
+      const sender = cardanocliJs.wallet(walletNameOrigin);
+      console.log(
+        "Balance of Sender wallet: " +
+          cardanocliJs.toAda(sender.balance().value.lovelace) +
+          " ADA"
+      );
+      debugger
+
+      //receiver address
+      const receiver = walletAddressDestination;
+      debugger
+
+      // create raw transaction
+      let txInfo = {
+        txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
+        txOut: [
+          {
+            address: sender.paymentAddr,
+            value: {
+              lovelace: sender.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
+            },
+          }, //value going back to sender
+          { address: receiver, value: { lovelace: cardanocliJs.toLovelace(transactionAmount) } }, //value going to receiver
+        ],
+        metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" } },
+      };
+      debugger
+      let raw = cardanocliJs.transactionBuildRaw(txInfo);
+      debugger
+
+      //calculate fee
+      let fee = cardanocliJs.transactionCalculateMinFee({
+        ...txInfo,
+        txBody: raw,
+        witnessCount: 1,
+      });
+      debugger
+
+      //pay the fee by subtracting it from the sender utxo
+      txInfo.txOut[0].value.lovelace -= fee;
+
+      //create final transaction
+      let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
+      debugger
+
+      //sign the transaction
+      let txSigned = cardanocliJs.transactionSign({
+        txBody: tx,
+        signingKeys: [sender.payment.skey],
+      });
+      debugger
+
+      //broadcast transaction
+      let txHash = cardanocliJs.transactionSubmit(txSigned);
+      debugger
+      console.log("TxHash: " + txHash);
+
+      command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
+      console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
+      // device.publish('topic_2', JSON.stringify(command_from_get_wallet_balance_by_name_result));
+      device.publish('topic_2', JSON.stringify(txHash));
+    }
     
-
-    // device.publish('topic_2', JSON.stringify(cardanocliJs.queryTip()));
-    // device.publish('topic_2', JSON.stringify('NO COMMAND ON JSON'));
-
   });
