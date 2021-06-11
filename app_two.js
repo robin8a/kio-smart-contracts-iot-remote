@@ -149,7 +149,7 @@ device
           }, //value going back to sender
           { address: receiver, value: { lovelace: cardanocliJs.toLovelace(transactionAmount) } }, //value going to receiver
         ],
-        metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" } },
+        metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }, 2: {author: "Luis R"}},
       };
       debugger
       let raw = cardanocliJs.transactionBuildRaw(txInfo);
