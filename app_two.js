@@ -113,7 +113,7 @@ device
       console.log('## device.on message Get_Wallet_Balance_By_Name_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
       device.publish('topic_2', JSON.stringify(command_from_get_wallet_balance_by_name_result));
     }
-
+    debugger
     if (obj.Transfer_Funds_Between_Wallets_From_UI !== undefined) { 
       console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI');
 
