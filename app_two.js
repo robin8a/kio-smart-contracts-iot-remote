@@ -255,7 +255,7 @@ device
     })
     debugger
     var params = {
-        Key: pFileName,
+        Key: credentials.path+pFileName,
         Bucket: credentials.bucket_name
     }
 
