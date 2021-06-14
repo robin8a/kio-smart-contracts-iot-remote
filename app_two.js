@@ -202,7 +202,7 @@ device
       console.log(err);
   });
 
-  function myFunc() {
+  function uploadFileToIPFS() {
     const readableStreamForFile = fs.createReadStream('./yourfile.png');
     const options = {
         pinataMetadata: {
@@ -225,3 +225,4 @@ device
     });
   };
   
+  uploadFileToIPFS()
