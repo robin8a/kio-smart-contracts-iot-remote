@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@pinata/sdk": "^1.1.23",
     "aws-iot-device-sdk": "^1.0.14",
     "cardanocli-js": "^3.1.1",
     "csvtojson": "^2.0.8",

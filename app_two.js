@@ -1,9 +1,11 @@
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
+const pinataSDK = require('@pinata/sdk');
 
 const CardanocliJs = require("./index.js");
 const os = require("os");
 const path = require("path");
+const fs = require('fs');
 
 const dir = path.join(os.homedir(), "testnet");
 const shelleyPath = path.join(
@@ -20,6 +22,8 @@ const cardanocliJs = new CardanocliJs({
   socketPath: "/opt/cardano/cnode/sockets/node0.socket",
 });
 
+
+const pinata = pinataSDK('8ae8c06d4e674e2c0487', 'be5bab6e2aa91194afa472f2a83f87d355bb738ec4a02e38341ef97c3a734674');
 
 
 //
@@ -189,3 +193,35 @@ device
     }
     
   });
+
+  pinata.testAuthentication().then((result) => {
+    //handle successful authentication here
+    console.log(result);
+  }).catch((err) => {
+      //handle error here
+      console.log(err);
+  });
+
+  function myFunc() {
+    const readableStreamForFile = fs.createReadStream('./yourfile.png');
+    const options = {
+        pinataMetadata: {
+            name: MyCustomName,
+            keyvalues: {
+                customKey: 'customValue',
+                customKey2: 'customValue2'
+            }
+        },
+        pinataOptions: {
+            cidVersion: 0
+        }
+    };
+    pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
+        //handle results here
+        console.log(result);
+    }).catch((err) => {
+        //handle error here
+        console.log(err);
+    });
+  };
+  
