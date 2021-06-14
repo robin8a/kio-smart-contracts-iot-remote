@@ -1,6 +1,7 @@
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
 const pinataSDK = require('@pinata/sdk');
+var AWS = require('aws-sdk');
 
 const CardanocliJs = require("./index.js");
 const os = require("os");
@@ -25,6 +26,9 @@ const cardanocliJs = new CardanocliJs({
 
 const pinata = pinataSDK('8ae8c06d4e674e2c0487', 'be5bab6e2aa91194afa472f2a83f87d355bb738ec4a02e38341ef97c3a734674');
 
+// AWS S3
+// module variables
+const config = require('./aws_credentials.json');
 
 //
 // Replace the values of '<YourUniqueClientIdentifier>' and '<YourCustomEndpoint>'
@@ -191,6 +195,15 @@ device
       // device.publish('topic_2', JSON.stringify(command_from_get_wallet_balance_by_name_result));
       device.publish('topic_2', JSON.stringify(txHash));
     }
+
+    if (obj.Upload_File_To_IPFS_From_UI !== undefined) { 
+      console.log('## device.on message Upload_File_To_IPFS_From_UI');
+      var fileName = obj.Upload_File_To_IPFS_From_UI[0].file_name;
+      console.log('## device.on message File Name: ', fileName);
+      command_from_upload_file_to_IPFS_result = cardanocliJs.wallet(walletName).balance();
+      console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
+      device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
+    }
     
   });
 
@@ -216,13 +229,53 @@ device
             cidVersion: 0
         }
     };
+
     pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
         //handle results here
         console.log(result);
+        return result
     }).catch((err) => {
         //handle error here
         console.log(err);
+        return err
     });
   };
   
-  uploadFileToIPFS()
+  function downloadFileFromAWSS3(pFileName) {
+    const credentials = config.credentials;
+
+    // AWS.config.update(
+    //   {
+    //     accessKeyId: credentials.access_key_id,
+    //     secretAccessKey: credentials.secret_access_key,
+    //     region: 'us-east-1'
+    //   }
+    // );
+
+    // res.attachment('01_block_chain.jpg');
+    // var fileStream = s3.getObject(options).createReadStream();
+    // fileStream.pipe(res);
+
+    var s3 = new AWS.S3({
+      accessKeyId: credentials.access_key_id,
+      secretAccessKey: credentials.secret_access_key,
+      region: 'us-east-1' // endpoint: new AWS.Endpoint("https://s3.pilw.io")
+    })
+
+    var params = {
+        Key: '01_block_chain.jpg',
+        Bucket: credentials.bucket_name
+    }
+
+    s3.getObject(params, function(err, data) {
+        if (err) {
+            throw err
+        }
+        fs.writeFileSync('./01_block_chain.jpg', data.Body)
+        console.log('file downloaded successfully')
+    })
+
+    
+  }
+  
+  downloadFileFromAWSS3()

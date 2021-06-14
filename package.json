@@ -11,6 +11,7 @@
   "dependencies": {
     "@pinata/sdk": "^1.1.23",
     "aws-iot-device-sdk": "^1.0.14",
+    "aws-sdk": "^2.927.0",
     "cardanocli-js": "^3.1.1",
     "csvtojson": "^2.0.8",
     "express": "^4.14.0",
