@@ -218,6 +218,7 @@ device
   });
 
   function uploadFileToIPFS(pFileName) {
+    debugger
     const readableStreamForFile = fs.createReadStream('./'+pFileName);
     const options = {
         pinataMetadata: {
@@ -252,7 +253,7 @@ device
       secretAccessKey: credentials.secret_access_key,
       region: 'us-east-1'
     })
-
+    debugger
     var params = {
         Key: pFileName,
         Bucket: credentials.bucket_name
