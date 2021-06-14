@@ -215,8 +215,8 @@ device
       console.log(err);
   });
 
-  function uploadFileToIPFS() {
-    const readableStreamForFile = fs.createReadStream('./yourfile.png');
+  function uploadFileToIPFS(pFileName) {
+    const readableStreamForFile = fs.createReadStream('./'+pFileName);
     const options = {
         pinataMetadata: {
             name: 'MyCustomName',
@@ -244,26 +244,14 @@ device
   function downloadFileFromAWSS3(pFileName) {
     const credentials = config.credentials;
 
-    // AWS.config.update(
-    //   {
-    //     accessKeyId: credentials.access_key_id,
-    //     secretAccessKey: credentials.secret_access_key,
-    //     region: 'us-east-1'
-    //   }
-    // );
-
-    // res.attachment('01_block_chain.jpg');
-    // var fileStream = s3.getObject(options).createReadStream();
-    // fileStream.pipe(res);
-
     var s3 = new AWS.S3({
       accessKeyId: credentials.access_key_id,
       secretAccessKey: credentials.secret_access_key,
-      region: 'us-east-1' // endpoint: new AWS.Endpoint("https://s3.pilw.io")
+      region: 'us-east-1'
     })
 
     var params = {
-        Key: '01_block_chain.jpg',
+        Key: pFileName,
         Bucket: credentials.bucket_name
     }
 
@@ -271,11 +259,12 @@ device
         if (err) {
             throw err
         }
-        fs.writeFileSync('./01_block_chain.jpg', data.Body)
+        fs.writeFileSync('./'+pFileName, data.Body)
         console.log('file downloaded successfully')
+        uploadFileToIPFS(pFileName)
+        console.log('file uploaded to piñata IPFS')
     })
 
-    
   }
   
-  downloadFileFromAWSS3()
+  downloadFileFromAWSS3('02_Colombia.jpg')
