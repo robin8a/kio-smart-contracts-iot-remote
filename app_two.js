@@ -206,7 +206,7 @@ device
     const readableStreamForFile = fs.createReadStream('./yourfile.png');
     const options = {
         pinataMetadata: {
-            name: MyCustomName,
+            name: 'MyCustomName',
             keyvalues: {
                 customKey: 'customValue',
                 customKey2: 'customValue2'
