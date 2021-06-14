@@ -201,8 +201,10 @@ device
       var fileName = obj.Upload_File_To_IPFS_From_UI[0].file_name;
       console.log('## device.on message File Name: ', fileName);
       command_from_upload_file_to_IPFS_result = downloadFileFromAWSS3(fileName);
-      console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
-      device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
+      if (command_from_upload_file_to_IPFS_result !== undefined) {
+        console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
+        device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
+      }
     }
     
   });
