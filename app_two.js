@@ -200,7 +200,7 @@ device
       console.log('## device.on message Upload_File_To_IPFS_From_UI');
       var fileName = obj.Upload_File_To_IPFS_From_UI[0].file_name;
       console.log('## device.on message File Name: ', fileName);
-      command_from_upload_file_to_IPFS_result = cardanocliJs.wallet(walletName).balance();
+      command_from_upload_file_to_IPFS_result = downloadFileFromAWSS3(fileName);
       console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
       device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
     }
@@ -243,6 +243,7 @@ device
   
   function downloadFileFromAWSS3(pFileName) {
     const credentials = config.credentials;
+    var result = '';
 
     var s3 = new AWS.S3({
       accessKeyId: credentials.access_key_id,
@@ -261,10 +262,11 @@ device
         }
         fs.writeFileSync('./'+pFileName, data.Body)
         console.log('file downloaded successfully')
-        uploadFileToIPFS(pFileName)
+        result = uploadFileToIPFS(pFileName)
         console.log('file uploaded to piñata IPFS')
+        return result
     })
 
   }
   
-  downloadFileFromAWSS3('02_Colombia.jpg')
+  // downloadFileFromAWSS3('02_Colombia.jpg')
