@@ -280,9 +280,10 @@ device
   }
 
   function createThumbnail(pFileName) {
+    
     sharp(pFileName)
     .resize(320, 240)
-    .toFile('output.webp', (err, info) => { console.log(err) });
+    .toFile('output.png', (err, info) => { console.log(err) });
   }
 
   
