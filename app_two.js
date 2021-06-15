@@ -227,7 +227,7 @@ device
     const readableStreamForFile = fs.createReadStream('./'+pFileName);
     const options = {
         pinataMetadata: {
-            name: 'MyCustomName',
+            name: pFileName,
             keyvalues: {
                 customKey: 'customValue',
                 customKey2: 'customValue2'
@@ -272,14 +272,18 @@ device
         fs.writeFileSync('./'+pFileName, data.Body)
         console.log('file downloaded successfully')
 
-        await createThumbnail(pFileName)
+        createThumbnail(pFileName)
         
-        resultCompleteImage = await uploadFileToIPFS(pFileName)
-        resultThumbnailImage = await uploadFileToIPFS(pFileName+'_thumbnail.png')
+        resultCompleteImage = uploadFileToIPFS(pFileName)
+        resultThumbnailImage = uploadFileToIPFS(pFileName+'_thumbnail.png')
         console.log('file uploaded to piñata IPFS')
-        console.log('file uploaded resultCompleteImage: ', resultCompleteImage)
-        console.log('file uploaded resultThumbnailImage: ', resultThumbnailImage)
-        return result
+        if (resultCompleteImage) {
+          console.log('file uploaded resultCompleteImage: ', resultCompleteImage)
+        }
+        if (resultThumbnailImage) {
+          console.log('file uploaded resultThumbnailImage: ', resultThumbnailImage)
+        }
+        return 'result'
     })
 
   }
