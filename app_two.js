@@ -272,7 +272,8 @@ device
         fs.writeFileSync('./'+pFileName, data.Body)
         console.log('file downloaded successfully')
 
-        createThumbnail(pFileName)
+        
+        createThumbnail(pFileName.split('.')[0])
         
         resultCompleteImage = uploadFileToIPFS(pFileName)
         resultThumbnailImage = uploadFileToIPFS(pFileName+'_thumbnail.png')
