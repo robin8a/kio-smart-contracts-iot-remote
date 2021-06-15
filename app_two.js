@@ -251,7 +251,8 @@ device
   
   async function downloadFileFromAWSS3(pFileName) {
     const credentials = config.credentials;
-    var result = '';
+    var resultCompleteImage = '';
+    var resultThumbnailImage = '';
 
     var s3 = new AWS.S3({
       accessKeyId: credentials.access_key_id,
@@ -271,21 +272,24 @@ device
         fs.writeFileSync('./'+pFileName, data.Body)
         console.log('file downloaded successfully')
 
+        await createThumbnail(pFileName)
         
-        result = uploadFileToIPFS(pFileName)
+        resultCompleteImage = await uploadFileToIPFS(pFileName)
+        resultThumbnailImage = await uploadFileToIPFS(pFileName+'_thumbnail.png')
         console.log('file uploaded to piñata IPFS')
+        console.log('file uploaded resultCompleteImage: ', resultCompleteImage)
+        console.log('file uploaded resultThumbnailImage: ', resultThumbnailImage)
         return result
     })
 
   }
 
-  function createThumbnail(pFileName) {
-    
+  async function createThumbnail(pFileName) {
     sharp(pFileName)
     .resize(320, 240)
-    .toFile('output.png', (err, info) => { console.log(err) });
+    .toFile(pFileName+'_thumbnail.png', (err, info) => { console.log(err) });
   }
 
   
   // downloadFileFromAWSS3('02_Colombia.jpg')
-  createThumbnail('yourfile_1.png')
+  // createThumbnail('yourfile_1.png')
