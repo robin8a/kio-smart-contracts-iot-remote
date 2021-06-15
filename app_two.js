@@ -273,7 +273,8 @@ device
         console.log('file downloaded successfully')
 
         var pathFileThumbnail = pFileName.split('.')[0]
-        createThumbnail(pFileName)
+        const resultcreateThumbnail = await createThumbnail(pFileName)
+        console.log('resultcreateThumbnail: ', resultcreateThumbnail)
         
         resultCompleteImage = uploadFileToIPFS(pFileName)
         resultThumbnailImage = uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
@@ -290,9 +291,16 @@ device
   }
 
   async function createThumbnail(pFileName) {
-    sharp(pFileName)
-    .resize(320, 240)
-    .toFile(pFileName.split('.')[0]+'_thumbnail.png', (err, info) => { console.log(err) });
+    return new Promise(resolve => {
+      sharp(pFileName)
+      .resize(320, 240)
+      .toFile(pFileName.split('.')[0]+'_thumbnail.png', (err, info) => 
+        { 
+          resolve(info)
+        }
+      );
+    });
+    
   }
 
   
