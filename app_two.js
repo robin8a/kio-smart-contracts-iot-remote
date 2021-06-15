@@ -6,7 +6,8 @@ var AWS = require('aws-sdk');
 const CardanocliJs = require("./index.js");
 const os = require("os");
 const path = require("path");
-const fs = require('fs');
+// const fs = require('fs');
+const fs = require('fs').promises;
 
 const dir = path.join(os.homedir(), "testnet");
 const shelleyPath = path.join(
@@ -29,6 +30,10 @@ const pinata = pinataSDK('8ae8c06d4e674e2c0487', 'be5bab6e2aa91194afa472f2a83f87
 // AWS S3
 // module variables
 const config = require('./aws_credentials.json');
+
+// Thumbnail
+const sharp = require('sharp');
+
 
 //
 // Replace the values of '<YourUniqueClientIdentifier>' and '<YourCustomEndpoint>'
@@ -244,7 +249,7 @@ device
     });
   };
   
-  function downloadFileFromAWSS3(pFileName) {
+  async function downloadFileFromAWSS3(pFileName) {
     const credentials = config.credentials;
     var result = '';
 
@@ -265,11 +270,21 @@ device
         }
         fs.writeFileSync('./'+pFileName, data.Body)
         console.log('file downloaded successfully')
+
+        
         result = uploadFileToIPFS(pFileName)
         console.log('file uploaded to piñata IPFS')
         return result
     })
 
   }
+
+  function createThumbnail(pFileName) {
+    sharp(pFileName)
+    .resize(320, 240)
+    .toFile('output.webp', (err, info) => { console.log(err) });
+  }
+
   
   // downloadFileFromAWSS3('02_Colombia.jpg')
+  createThumbnail('yourfile_1.png')

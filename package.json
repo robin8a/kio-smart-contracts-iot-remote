@@ -20,6 +20,7 @@
     "mssql": "^5.1.0",
     "ping": "^0.2.2",
     "ps-tree": "^1.1.0",
+    "sharp": "^0.28.3",
     "shelljs": "^0.7.4",
     "socket.io": "^1.5.0",
     "socket.io-client": "^1.5.0",
