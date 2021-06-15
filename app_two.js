@@ -292,7 +292,7 @@ device
   async function createThumbnail(pFileName) {
     sharp(pFileName)
     .resize(320, 240)
-    .toFile(pFileName+'_thumbnail.png', (err, info) => { console.log(err) });
+    .toFile(pFileName.split('.')[0]+'_thumbnail.png', (err, info) => { console.log(err) });
   }
 
   
