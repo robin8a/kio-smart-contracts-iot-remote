@@ -272,11 +272,11 @@ device
         fs.writeFileSync('./'+pFileName, data.Body)
         console.log('file downloaded successfully')
 
-        
-        createThumbnail(pFileName.split('.')[0])
+        var pathFileThumbnail = pFileName.split('.')[0]
+        createThumbnail(pathFileThumbnail)
         
         resultCompleteImage = uploadFileToIPFS(pFileName)
-        resultThumbnailImage = uploadFileToIPFS(pFileName+'_thumbnail.png')
+        resultThumbnailImage = uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
         console.log('file uploaded to piñata IPFS')
         if (resultCompleteImage) {
           console.log('file uploaded resultCompleteImage: ', resultCompleteImage)
