@@ -273,7 +273,7 @@ device
         console.log('file downloaded successfully')
 
         var pathFileThumbnail = pFileName.split('.')[0]
-        createThumbnail(pathFileThumbnail)
+        createThumbnail(pFileName)
         
         resultCompleteImage = uploadFileToIPFS(pFileName)
         resultThumbnailImage = uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
