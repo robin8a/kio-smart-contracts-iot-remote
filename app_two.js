@@ -1,9 +1,12 @@
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
+const pinataSDK = require('@pinata/sdk');
+var AWS = require('aws-sdk');
 
 const CardanocliJs = require("./index.js");
 const os = require("os");
 const path = require("path");
+const fs = require('fs');
 
 const dir = path.join(os.homedir(), "testnet");
 const shelleyPath = path.join(
@@ -21,6 +24,11 @@ const cardanocliJs = new CardanocliJs({
 });
 
 
+const pinata = pinataSDK('8ae8c06d4e674e2c0487', 'be5bab6e2aa91194afa472f2a83f87d355bb738ec4a02e38341ef97c3a734674');
+
+// AWS S3
+// module variables
+const config = require('./aws_credentials.json');
 
 //
 // Replace the values of '<YourUniqueClientIdentifier>' and '<YourCustomEndpoint>'
@@ -187,5 +195,81 @@ device
       // device.publish('topic_2', JSON.stringify(command_from_get_wallet_balance_by_name_result));
       device.publish('topic_2', JSON.stringify(txHash));
     }
+
+    if (obj.Upload_File_To_IPFS_From_UI !== undefined) { 
+      console.log('## device.on message Upload_File_To_IPFS_From_UI');
+      var fileName = obj.Upload_File_To_IPFS_From_UI[0].file_name;
+      console.log('## device.on message File Name: ', fileName);
+      command_from_upload_file_to_IPFS_result = downloadFileFromAWSS3(fileName);
+      if (command_from_upload_file_to_IPFS_result !== undefined) {
+        console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
+        device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
+      }
+    }
     
   });
+
+  pinata.testAuthentication().then((result) => {
+    //handle successful authentication here
+    console.log(result);
+  }).catch((err) => {
+      //handle error here
+      console.log(err);
+  });
+
+  function uploadFileToIPFS(pFileName) {
+    debugger
+    const readableStreamForFile = fs.createReadStream('./'+pFileName);
+    const options = {
+        pinataMetadata: {
+            name: 'MyCustomName',
+            keyvalues: {
+                customKey: 'customValue',
+                customKey2: 'customValue2'
+            }
+        },
+        pinataOptions: {
+            cidVersion: 0
+        }
+    };
+
+    pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
+        //handle results here
+        console.log(result);
+        return result
+    }).catch((err) => {
+        //handle error here
+        console.log(err);
+        return err
+    });
+  };
+  
+  function downloadFileFromAWSS3(pFileName) {
+    const credentials = config.credentials;
+    var result = '';
+
+    var s3 = new AWS.S3({
+      accessKeyId: credentials.access_key_id,
+      secretAccessKey: credentials.secret_access_key,
+      region: 'us-east-1'
+    })
+    debugger
+    var params = {
+        Key: credentials.path+pFileName,
+        Bucket: credentials.bucket_name
+    }
+
+    s3.getObject(params, function(err, data) {
+        if (err) {
+            throw err
+        }
+        fs.writeFileSync('./'+pFileName, data.Body)
+        console.log('file downloaded successfully')
+        result = uploadFileToIPFS(pFileName)
+        console.log('file uploaded to piñata IPFS')
+        return result
+    })
+
+  }
+  
+  // downloadFileFromAWSS3('02_Colombia.jpg')
