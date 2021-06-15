@@ -265,7 +265,7 @@ device
         Bucket: credentials.bucket_name
     }
 
-    s3.getObject(params, function(err, data) {
+    s3.getObject(params, async function(err, data) {
         if (err) {
             throw err
         }
