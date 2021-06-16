@@ -1,3 +1,6 @@
+// ToDo test trasactions without funds
+// ToDo create a folder for IPFS images
+
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
 const pinataSDK = require('@pinata/sdk');
@@ -76,7 +79,7 @@ device
   });
 
 device
-  .on('message', function(topic, payload) {
+  .on('message', async function(topic, payload) {
     console.log('##########################################')
     console.log('message topic payload: ', topic, payload);
     console.log('message topic payload.toString(): ', topic, payload.toString());
@@ -164,9 +167,7 @@ device
         ],
         metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
       };
-      debugger
       let raw = cardanocliJs.transactionBuildRaw(txInfo);
-      debugger
 
       //calculate fee
       let fee = cardanocliJs.transactionCalculateMinFee({
@@ -174,25 +175,21 @@ device
         txBody: raw,
         witnessCount: 1,
       });
-      debugger
 
       //pay the fee by subtracting it from the sender utxo
       txInfo.txOut[0].value.lovelace -= fee;
 
       //create final transaction
       let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
-      debugger
 
       //sign the transaction
       let txSigned = cardanocliJs.transactionSign({
         txBody: tx,
         signingKeys: [sender.payment.skey],
       });
-      debugger
 
       //broadcast transaction
       let txHash = cardanocliJs.transactionSubmit(txSigned);
-      debugger
       console.log("TxHash: " + txHash);
 
       command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
@@ -205,7 +202,9 @@ device
       console.log('## device.on message Upload_File_To_IPFS_From_UI');
       var fileName = obj.Upload_File_To_IPFS_From_UI[0].file_name;
       console.log('## device.on message File Name: ', fileName);
-      command_from_upload_file_to_IPFS_result = downloadFileFromAWSS3(fileName);
+      debugger
+      command_from_upload_file_to_IPFS_result = await downloadFileFromAWSS3UploadIPFS(fileName);
+      debugger
       if (command_from_upload_file_to_IPFS_result !== undefined) {
         console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
         device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
@@ -222,71 +221,85 @@ device
       console.log(err);
   });
 
-  function uploadFileToIPFS(pFileName) {
-    debugger
-    const readableStreamForFile = fs.createReadStream('./'+pFileName);
-    const options = {
-        pinataMetadata: {
-            name: pFileName,
-            keyvalues: {
-                customKey: 'customValue',
-                customKey2: 'customValue2'
-            }
-        },
-        pinataOptions: {
-            cidVersion: 0
-        }
-    };
+  async function uploadFileToIPFS(pFileName) {
+    return new Promise(resolve => {
 
-    pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
-        //handle results here
-        console.log(result);
-        return result
-    }).catch((err) => {
-        //handle error here
-        console.log(err);
-        return err
+      const readableStreamForFile = fs.createReadStream('./'+pFileName);
+      const options = {
+          pinataMetadata: {
+              name: pFileName,
+              keyvalues: {
+                  customKey: 'customValue',
+                  customKey2: 'customValue2'
+              }
+          },
+          pinataOptions: {
+              cidVersion: 0
+          }
+      };
+
+      pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
+          //handle results here
+          console.log('uploadFileToIPFS: pinFileToIPFS: result: ', result);
+          resolve(result)
+          // return result
+      }).catch((err) => {
+          //handle error here
+          console.log('uploadFileToIPFS: pinFileToIPFS: err: ', err);
+          resolve(err)
+          // return err
+      });
     });
   };
   
-  async function downloadFileFromAWSS3(pFileName) {
-    const credentials = config.credentials;
-    var resultCompleteImage = '';
-    var resultThumbnailImage = '';
+  async function downloadFileFromAWSS3UploadIPFS(pFileName) {
+    return new Promise(resolve => {
+      const credentials = config.credentials;
 
-    var s3 = new AWS.S3({
-      accessKeyId: credentials.access_key_id,
-      secretAccessKey: credentials.secret_access_key,
-      region: 'us-east-1'
-    })
-    debugger
-    var params = {
-        Key: credentials.path+pFileName,
-        Bucket: credentials.bucket_name
-    }
+      var s3 = new AWS.S3({
+        accessKeyId: credentials.access_key_id,
+        secretAccessKey: credentials.secret_access_key,
+        region: 'us-east-1'
+      })
 
-    s3.getObject(params, async function(err, data) {
-        if (err) {
-            throw err
-        }
-        fs.writeFileSync('./'+pFileName, data.Body)
-        console.log('file downloaded successfully')
+      var params = {
+          Key: credentials.path+pFileName,
+          Bucket: credentials.bucket_name
+      }
 
-        var pathFileThumbnail = pFileName.split('.')[0]
-        const resultcreateThumbnail = await createThumbnail(pFileName)
-        console.log('resultcreateThumbnail: ', resultcreateThumbnail)
-        
-        resultCompleteImage = uploadFileToIPFS(pFileName)
-        resultThumbnailImage = uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
-        console.log('file uploaded to piñata IPFS')
-        if (resultCompleteImage) {
-          console.log('file uploaded resultCompleteImage: ', resultCompleteImage)
-        }
-        if (resultThumbnailImage) {
-          console.log('file uploaded resultThumbnailImage: ', resultThumbnailImage)
-        }
-        return 'result'
-    })
+      s3.getObject(params, async function(err, data) {
+          if (err) {
+              throw err
+          }
+          fs.writeFileSync('./'+pFileName, data.Body)
+          console.log('downloadFileFromAWSS3UploadIPFS: file downloaded successfully')
+
+          var pathFileThumbnail = pFileName.split('.')[0]
+          const resultcreateThumbnail = await createThumbnail(pFileName)
+          console.log('downloadFileFromAWSS3UploadIPFS: resultcreateThumbnail: ', resultcreateThumbnail)
+          
+          const resultCompleteImage = await uploadFileToIPFS(pFileName)
+          const resultThumbnailImage = await uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
+
+          console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultCompleteImage: ', resultCompleteImage)
+          console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultThumbnailImage: ', resultThumbnailImage)
+
+          // console.log('file uploaded to piñata IPFS')
+          // if (resultCompleteImage) {
+          //   console.log('file uploaded resultCompleteImage: ', resultCompleteImage)
+          // }
+          // if (resultThumbnailImage) {
+          //   console.log('file uploaded resultThumbnailImage: ', resultThumbnailImage)
+          // }
+          debugger
+          const ipfsImages = {
+            completeImage: resultCompleteImage,
+            thumbNailImage: resultThumbnailImage,
+          }
+          debugger
+          resolve(ipfsImages)
+      })
+    });
 
   }
 
@@ -328,15 +341,73 @@ device
       }
       // The __dirname in a node script returns the path of the folder where the current JavaScript file resides. __filename and _
       // _dirname are used to get the filename and directory name of the currently executing file.
-      
+      // ToDo change mint-policy.json to <DDMMYYHH24>-<WALLET_NAME>-mint-policy.json
       fs.writeFileSync(__dirname + "/policies/mint-policy.json", JSON.stringify(mintScript, null, 2))
       fs.writeFileSync(__dirname + "/policies/mint-policy-id.txt", cardanocliJs.transactionPolicyid(mintScript))
-      resolve('resolved');
+
+      resolve(mintScript);
       
     });
   }
 
-  createTimeLockedMintPolicy('Test_0958')
-  
-  // downloadFileFromAWSS3('02_Colombia.jpg')
+  async function mintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
+
+    return new Promise(resolve => {
+
+      const POLICY_ID = cardano.transactionPolicyid(pMintScript)
+      const ASSET_NAME = pAssetName
+      const ASSET_ID = POLICY_ID + "." + ASSET_NAME
+
+      const metadata = {
+        721: {
+          [POLICY_ID]: {
+            [ASSET_NAME]: {
+              name: pTokenName,
+              image: pIpfsImage, // Original Image
+              description: pIpfsImageDescription,
+              type: pIpfsImageType,
+              src: pThumbnailImage, // Thumbnail Image
+            },
+          },
+        },
+      };
+
+      // const metadata = {
+      //   721: {
+      //     [POLICY_ID]: {
+      //       [ASSET_NAME]: {
+      //         name: "token name",
+      //         image: "ipfs://QmQqzMTavQgT4f4T5v6PWBp7XNKtoPmC9jvn12WPT3gkSE",
+      //         description: "Super Fancy Berry Space Green NFT",
+      //         type: "image/png",
+      //         src: "ipfs://Qmaou5UzxPmPKVVTM9GzXPrDufP55EDZCtQmpy3T64ab9N",
+      //         authors: ["PIADA", "SBLYR"],
+      //       },
+      //     },
+      //   },
+      // };
+      
+      const tx = {
+        txIn: wallet.balance().utxo,
+        txOut: [
+          {
+            address: wallet.paymentAddr,
+            amount: { ...wallet.balance().amount, [ASSET_ID]: 1 },
+          },
+        ],
+        mint: [{ action: "mint", amount: 1, token: ASSET_ID }],
+        metadata,
+        witnessCount: 2,
+      };
+      
+      const raw = buildTransaction(tx);
+      const signed = signTransaction(wallet, raw, mintScript);
+      const txHash = cardano.transactionSubmit(signed);
+    
+      resolve( 'ToDo change');
+      
+    });
+  }
+  // createTimeLockedMintPolicy('Test_0958')
+  downloadFileFromAWSS3UploadIPFS('09_uuu_vvv.png')
   // createThumbnail('yourfile_1.png')
