@@ -1,5 +1,6 @@
 // ToDo test trasactions without funds
 // ToDo create a folder for IPFS images
+// ToDo topic_2 add to config.json
 
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
@@ -87,7 +88,6 @@ device
     const obj = JSON.parse(jsonString);
     console.log('obj: ', obj);
     console.log('##########################################')
-    // debugger
     // console.log('obj.Command_From_UI', obj.Command_From_UI);
     // console.log('obj.msg.Command_From_UI', obj.msg.Command_From_UI);
 
@@ -194,7 +194,6 @@ device
 
       command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
       console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
-      // device.publish('topic_2', JSON.stringify(command_from_get_wallet_balance_by_name_result));
       device.publish('topic_2', JSON.stringify(txHash));
     }
 
@@ -202,9 +201,7 @@ device
       console.log('## device.on message Upload_File_To_IPFS_From_UI');
       var fileName = obj.Upload_File_To_IPFS_From_UI[0].file_name;
       console.log('## device.on message File Name: ', fileName);
-      debugger
       command_from_upload_file_to_IPFS_result = await downloadFileFromAWSS3UploadIPFS(fileName);
-      debugger
       if (command_from_upload_file_to_IPFS_result !== undefined) {
         console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
         device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
