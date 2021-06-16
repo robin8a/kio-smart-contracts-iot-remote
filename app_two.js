@@ -409,5 +409,5 @@ device
     });
   }
   // createTimeLockedMintPolicy('Test_0958')
-  downloadFileFromAWSS3UploadIPFS('09_uuu_vvv.png')
+  downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
   // createThumbnail('yourfile_1.png')
