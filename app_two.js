@@ -291,12 +291,10 @@ device
           // if (resultThumbnailImage) {
           //   console.log('file uploaded resultThumbnailImage: ', resultThumbnailImage)
           // }
-          debugger
           const ipfsImages = {
             completeImage: resultCompleteImage,
             thumbNailImage: resultThumbnailImage,
           }
-          debugger
           resolve(ipfsImages)
       })
     });
@@ -409,5 +407,5 @@ device
     });
   }
   // createTimeLockedMintPolicy('Test_0958')
-  downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
+  // downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
   // createThumbnail('yourfile_1.png')
