@@ -303,6 +303,40 @@ device
     
   }
 
+  async function createTimeLockedMintPolicy(pWalletName) {
+    return new Promise(resolve => {
+      const fs = require("fs")
+
+      const wallet = cardanocliJs.wallet(pWalletName)
+
+      const { slot } = cardanocliJs.queryTip()
+
+      const SLOTS_PER_EPOCH = 5 * 24 * 60 * 60 // 432000
+
+      const mintScript = {
+          type: "all",
+          scripts: [
+              {
+                  slot: slot + (SLOTS_PER_EPOCH * 5),
+                  type: "before"
+              },
+              {
+                  keyHash: cardanocliJs.addressKeyHash(wallet.name),
+                  type: "sig"
+              }
+          ]
+      }
+      // The __dirname in a node script returns the path of the folder where the current JavaScript file resides. __filename and _
+      // _dirname are used to get the filename and directory name of the currently executing file.
+      
+      fs.writeFileSync(__dirname + "/policies/mint-policy.json", JSON.stringify(mintScript, null, 2))
+      fs.writeFileSync(__dirname + "/policies/mint-policy-id.txt", cardanocliJs.transactionPolicyid(mintScript))
+      resolve('resolved');
+      
+    });
+  }
+
+  createTimeLockedMintPolicy('Test_0958')
   
   // downloadFileFromAWSS3('02_Colombia.jpg')
   // createThumbnail('yourfile_1.png')
