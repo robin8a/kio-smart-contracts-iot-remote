@@ -484,4 +484,4 @@ device
   // createThumbnail('yourfile_1.png')
 
 
-  // const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+  const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
