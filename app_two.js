@@ -443,16 +443,16 @@ device
     });
   }
   
-  const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
-    pWalletName, 
-    pAssetName, 
-    pTokenName, 
-    pIpfsImage, 
-    pIpfsImageDescription, 
-    pIpfsImageType, 
-    pThumbnailImage
-  )
-  console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
+  // const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
+  //   pWalletName, 
+  //   pAssetName, 
+  //   pTokenName, 
+  //   pIpfsImage, 
+  //   pIpfsImageDescription, 
+  //   pIpfsImageType, 
+  //   pThumbnailImage
+  // )
+  // console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
 
   // const createMintAssetResult = createMintAsset(
   //   'Test_0958', // pWalletName 
