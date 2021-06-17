@@ -313,43 +313,44 @@ device
 
   async function createTimeLockedMintPolicy(pWalletName) {
     return new Promise(resolve => {
-      const fs = require("fs")
+      // const fs = require("fs")
 
-      const wallet = cardanocliJs.wallet(pWalletName)
+      // const wallet = cardanocliJs.wallet(pWalletName)
 
-      const { slot } = cardanocliJs.queryTip()
+      // const { slot } = cardanocliJs.queryTip()
 
-      const SLOTS_PER_EPOCH = 5 * 24 * 60 * 60 // 432000
+      // const SLOTS_PER_EPOCH = 5 * 24 * 60 * 60 // 432000
 
-      const mintScript = {
-          type: "all",
-          scripts: [
-              {
-                  slot: slot + (SLOTS_PER_EPOCH * 5),
-                  type: "before"
-              },
-              {
-                  keyHash: cardanocliJs.addressKeyHash(wallet.name),
-                  type: "sig"
-              }
-          ]
-      }
-      // The __dirname in a node script returns the path of the folder where the current JavaScript file resides. __filename and _
-      // _dirname are used to get the filename and directory name of the currently executing file.
-      // ToDo change mint-policy.json to <DDMMYYHH24>-<WALLET_NAME>-mint-policy.json
-      const mintPolicyJsonPath = __dirname + '/policies/mint-policy.json'
-      const mintPolicyIdTxt = __dirname + "/policies/mint-policy-id.txt"
+      // const mintScript = {
+      //     type: "all",
+      //     scripts: [
+      //         {
+      //             slot: slot + (SLOTS_PER_EPOCH * 5),
+      //             type: "before"
+      //         },
+      //         {
+      //             keyHash: cardanocliJs.addressKeyHash(wallet.name),
+      //             type: "sig"
+      //         }
+      //     ]
+      // }
+      // // The __dirname in a node script returns the path of the folder where the current JavaScript file resides. __filename and _
+      // // _dirname are used to get the filename and directory name of the currently executing file.
+      // // ToDo change mint-policy.json to <DDMMYYHH24>-<WALLET_NAME>-mint-policy.json
+      // const mintPolicyJsonPath = __dirname + '/policies/mint-policy.json'
+      // const mintPolicyIdTxt = __dirname + "/policies/mint-policy-id.txt"
 
-      fs.writeFileSync(mintPolicyJsonPath, JSON.stringify(mintScript, null, 2))
-      fs.writeFileSync(mintPolicyIdTxt, cardanocliJs.transactionPolicyid(mintScript))
+      // fs.writeFileSync(mintPolicyJsonPath, JSON.stringify(mintScript, null, 2))
+      // fs.writeFileSync(mintPolicyIdTxt, cardanocliJs.transactionPolicyid(mintScript))
 
-      const mintScriptResult = {
-        mintScript: mintScript,
-        mintPolicyJsonPath: mintPolicyJsonPath,
-        mintPolicyIdTxt: mintPolicyIdTxt,
-      }
+      // const mintScriptResult = {
+      //   mintScript: mintScript,
+      //   mintPolicyJsonPath: mintPolicyJsonPath,
+      //   mintPolicyIdTxt: mintPolicyIdTxt,
+      // }
 
-      resolve(mintScriptResult)
+      // resolve(mintScriptResult)
+      resolve('mintScriptResult')
       
     });
   }
