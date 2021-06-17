@@ -6,6 +6,7 @@ var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
 const pinataSDK = require('@pinata/sdk');
 var AWS = require('aws-sdk');
+const assets = require("./assets.json")
 
 const CardanocliJs = require("./index.js");
 const os = require("os");
@@ -399,26 +400,14 @@ device
         },
       };
       
-      // const metadata = {
-      //   721: {
-      //     [POLICY_ID]: {
-      //       [ASSET_NAME]: {
-      //         name: "token name",
-      //         image: "ipfs://QmQqzMTavQgT4f4T5v6PWBp7XNKtoPmC9jvn12WPT3gkSE",
-      //         description: "Super Fancy Berry Space Green NFT",
-      //         type: "image/png",
-      //         src: "ipfs://Qmaou5UzxPmPKVVTM9GzXPrDufP55EDZCtQmpy3T64ab9N",
-      //         authors: ["PIADA", "SBLYR"],
-      //       },
-      //     },
-      //   },
-      // };
-      
       const tx = {
         txIn: wallet.balance().utxo,
         txOut: [
           {
             address: wallet.paymentAddr,
+            // value: {
+            //   lovelace: wallet.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
+            // },
             amount: { ...wallet.balance().amount, [ASSET_ID]: 1 },
           },
         ],
@@ -465,7 +454,18 @@ device
       resolve('borrar')
     });
   }
+
+  const txOut_amount = assets.reduce((result, asset) => {
+
+    const ASSET_ID = POLICY_ID + "." + asset.id
+    result[ASSET_ID] = 1
+    return result
+
+  }, {
+      ...wallet.balance().amount
+  })
   
+  console.log('txOut_amount: ', txOut_amount)
   // createTimeLockedMintPolicy('Test_0958')
   // downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
   // createThumbnail('yourfile_1.png')
