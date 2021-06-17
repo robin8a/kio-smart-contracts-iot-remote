@@ -446,35 +446,22 @@ device
     });
   }
   
-  // const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
-  //   pWalletName, 
-  //   pAssetName, 
-  //   pTokenName, 
-  //   pIpfsImage, 
-  //   pIpfsImageDescription, 
-  //   pIpfsImageType, 
-  //   pThumbnailImage
-  // )
-  // console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
-
-  // const createMintAssetResult = createMintAsset(
-  //   'Test_0958', // pWalletName 
-  //   pMintScript, 
-  //   pAssetName, 
-  //   pTokenName, 
-  //   pIpfsImage,
-  //   pIpfsImageDescription,
-  //   pIpfsImageType,
-  //   pThumbnailImage
-  // )
-
-  // console.log('createdMintAssetResult: ', createdMintAssetResult)
-
   // createTimeLockedMintPolicy('Test_0958')
   // downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
   // createThumbnail('yourfile_1.png')
 
 async function testMint() {
-  const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
-  console.log('createdTimeLockedMintPolicyResult: ', createdTimeLockedMintPolicyResult)
+  // const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+  // console.log('createdTimeLockedMintPolicyResult: ', createdTimeLockedMintPolicyResult)
+  const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
+    pWalletName, 
+    pAssetName, 
+    pTokenName, 
+    pIpfsImage, 
+    pIpfsImageDescription, 
+    pIpfsImageType, 
+    pThumbnailImage
+  )
+  console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
 }
+
