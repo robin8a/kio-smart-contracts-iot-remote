@@ -357,6 +357,7 @@ device
   const buildTransaction = async (tx) => {
     debugger
     const raw = cardanocliJs.transactionBuildRaw(tx);
+    debugger
     const fee = cardanocliJs.transactionCalculateMinFee({
       ...tx,
       txBody: raw,
