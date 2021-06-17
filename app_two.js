@@ -423,25 +423,25 @@ device
     });
   }
 
-  function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
-    return new Promise(resolve => {
-      const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
-      debugger
-      // createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
-      const createdMintAssetResult = await createMintAsset(
-        pWalletName,
-        createdTimeLockedMintPolicyResult.pMintScript,
-        pAssetName, 
-        pTokenName, 
-        pIpfsImage, 
-        pIpfsImageDescription, 
-        pIpfsImageType, 
-        pThumbnailImage
-      )
-      debugger
-      resolve(createdMintAssetResult)
-    });
-  }
+  // function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
+  //   return new Promise(resolve => {
+  //     const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+  //     debugger
+  //     // createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
+  //     const createdMintAssetResult = await createMintAsset(
+  //       pWalletName,
+  //       createdTimeLockedMintPolicyResult.pMintScript,
+  //       pAssetName, 
+  //       pTokenName, 
+  //       pIpfsImage, 
+  //       pIpfsImageDescription, 
+  //       pIpfsImageType, 
+  //       pThumbnailImage
+  //     )
+  //     debugger
+  //     resolve(createdMintAssetResult)
+  //   });
+  // }
   
   // const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
   //   pWalletName, 
