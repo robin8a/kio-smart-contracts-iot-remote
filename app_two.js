@@ -358,7 +358,7 @@ device
 
     return new Promise(resolve => {
       const wallet = cardanocliJs.wallet(pWalletName)
-      const POLICY_ID = cardano.transactionPolicyid(pMintScript)
+      const POLICY_ID = cardanocliJs.transactionPolicyid(pMintScript)
       const ASSET_NAME = pAssetName
       const ASSET_ID = POLICY_ID + "." + ASSET_NAME
       debugger
