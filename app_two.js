@@ -424,10 +424,11 @@ device
   }
 
   function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
-    return new Promise(resolve => {
-      const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
-      resolve('borrar')
-    });
+    const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+    // return new Promise(resolve => {
+    //   const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+    //   resolve('borrar')
+    // });
   }
 
 
