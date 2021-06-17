@@ -454,14 +454,15 @@ async function testMint() {
   // const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
   // console.log('createdTimeLockedMintPolicyResult: ', createdTimeLockedMintPolicyResult)
   const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
-    pWalletName, 
-    pAssetName, 
-    pTokenName, 
-    pIpfsImage, 
-    pIpfsImageDescription, 
-    pIpfsImageType, 
-    pThumbnailImage
+    'Test_0958', 
+    '1706_1136_ASSET_NAME', // pAssetName, 
+    '1706_1136_TOKEN_NAME', // pTokenName
+    'ipfs://QmbeLpUmznRs7AY8aGxixDN3KAsjP2dFpvCa1XkXyzQ7HF', // pIpfsImage
+    'pIpfsImageDescription', //pIpfsImageDescription 
+    'image/png', //pIpfsImageType
+    'ipfs://QmQ7AeHSWtfrcFqmjUUGet6YbfSWGuiRo9L9emWco3tVhk', // pThumbnailImage
   )
   console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
 }
 
+testMint()
