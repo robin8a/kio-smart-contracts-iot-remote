@@ -354,6 +354,24 @@ device
     });
   }
 
+  const buildTransaction = (tx) => {
+    const raw = cardanocliJs.transactionBuildRaw(tx);
+    const fee = cardanocliJs.transactionCalculateMinFee({
+      ...tx,
+      txBody: raw,
+    });
+    tx.txOut[0].amount.lovelace -= fee;
+    return cardanocliJs.transactionBuildRaw({ ...tx, fee });
+  };
+  
+  const signTransaction = (wallet, tx, script) => {
+    return cardanocliJs.transactionSign({
+      signingKeys: [wallet.payment.skey, wallet.payment.skey],
+      scriptFile: script,
+      txBody: tx,
+    });
+  };
+
   async function createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
 
     return new Promise(resolve => {
@@ -409,7 +427,7 @@ device
       debugger
       const signed = signTransaction(wallet, raw, mintScript);
       debugger
-      const txHash = cardano.transactionSubmit(signed);
+      const txHash = cardanocliJs.transactionSubmit(signed);
       debugger
       
       const mintAssetResult = {
