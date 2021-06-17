@@ -454,14 +454,15 @@ device
     });
   }
 
+  const wallet2 = cardanocliJs.wallet('Test_0958')
   const txOut_amount = assets.reduce((result, asset) => {
-    const wallet = cardanocliJs.wallet('Test_0958')
+    
     const ASSET_ID = POLICY_ID + "." + asset.id
     result[ASSET_ID] = 1
     return result
 
   }, {
-      ...wallet.balance().amount
+      ...wallet2.balance().amount
   })
   
   console.log('txOut_amount: ', txOut_amount)
