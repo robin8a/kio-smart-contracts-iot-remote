@@ -355,6 +355,7 @@ device
   }
 
   const buildTransaction = async (tx) => {
+    debugger
     const raw = cardanocliJs.transactionBuildRaw(tx);
     const fee = cardanocliJs.transactionCalculateMinFee({
       ...tx,
@@ -365,6 +366,7 @@ device
   };
   
   const signTransaction = async (wallet, tx, script) => {
+    debugger
     return cardanocliJs.transactionSign({
       signingKeys: [wallet.payment.skey, wallet.payment.skey],
       scriptFile: script,
