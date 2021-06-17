@@ -427,7 +427,7 @@ device
     return new Promise(async resolve => {
       const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
       debugger
-      createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
+      createMintAsset(pWalletName, createdTimeLockedMintPolicyResult.mintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
       const createdMintAssetResult = await createMintAsset(
         pWalletName,
         createdTimeLockedMintPolicyResult.mintScript,
