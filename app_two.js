@@ -358,11 +358,10 @@ device
 
     return new Promise(resolve => {
       const wallet = cardanocliJs.wallet(pWalletName)
-
       const POLICY_ID = cardano.transactionPolicyid(pMintScript)
       const ASSET_NAME = pAssetName
       const ASSET_ID = POLICY_ID + "." + ASSET_NAME
-
+      debugger
       const metadata = {
         721: {
           [POLICY_ID]: {
@@ -376,7 +375,7 @@ device
           },
         },
       };
-
+      debugger
       // const metadata = {
       //   721: {
       //     [POLICY_ID]: {
@@ -404,17 +403,21 @@ device
         metadata,
         witnessCount: 2,
       };
+      debugger
       
       const raw = buildTransaction(tx);
+      debugger
       const signed = signTransaction(wallet, raw, mintScript);
+      debugger
       const txHash = cardano.transactionSubmit(signed);
+      debugger
       
       const mintAssetResult = {
         raw: raw,
         signed: signed,
         txHash: txHash,
       }
-
+      debugger
       resolve(mintAssetResult);
       
     });
@@ -423,6 +426,7 @@ device
   function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
     return new Promise(resolve => {
       const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+      debugger
       // createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
       const createdMintAssetResult = await createMintAsset(
         pWalletName,
@@ -434,20 +438,34 @@ device
         pIpfsImageType, 
         pThumbnailImage
       )
+      debugger
       resolve(createdMintAssetResult)
     });
   }
   
-  // const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
-  //   pWalletName, 
+  const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
+    pWalletName, 
+    pAssetName, 
+    pTokenName, 
+    pIpfsImage, 
+    pIpfsImageDescription, 
+    pIpfsImageType, 
+    pThumbnailImage
+  )
+  console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
+
+  // const createMintAssetResult = createMintAsset(
+  //   'Test_0958', // pWalletName 
+  //   pMintScript, 
   //   pAssetName, 
   //   pTokenName, 
-  //   pIpfsImage, 
-  //   pIpfsImageDescription, 
-  //   pIpfsImageType, 
+  //   pIpfsImage,
+  //   pIpfsImageDescription,
+  //   pIpfsImageType,
   //   pThumbnailImage
   // )
-  // console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
+
+  // console.log('createdMintAssetResult: ', createdMintAssetResult)
 
   // createTimeLockedMintPolicy('Test_0958')
   // downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
