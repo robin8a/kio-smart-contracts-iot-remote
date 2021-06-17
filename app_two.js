@@ -420,7 +420,7 @@ device
     });
   }
 
-  function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName) {
+  function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
     return new Promise(resolve => {
       const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
       // createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
