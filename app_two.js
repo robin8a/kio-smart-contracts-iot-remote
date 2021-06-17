@@ -423,6 +423,15 @@ device
     });
   }
 
+  function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
+    return new Promise(resolve => {
+      const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+      resolve('borrar')
+    });
+  }
+
+
+
   // async function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
   //   return new Promise(resolve => {
   //     const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
