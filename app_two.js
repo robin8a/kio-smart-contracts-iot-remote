@@ -313,7 +313,7 @@ device
 
   async function createTimeLockedMintPolicy(pWalletName) {
     return new Promise(resolve => {
-      // const fs = require("fs")
+      const fs = require("fs")
 
       const wallet = cardanocliJs.wallet(pWalletName)
 
