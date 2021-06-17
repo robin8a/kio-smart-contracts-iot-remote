@@ -12,7 +12,6 @@ const CardanocliJs = require("./index.js");
 const os = require("os");
 const path = require("path");
 const fs = require('fs');
-// const fs = require('fs').promises;
 
 const dir = path.join(os.homedir(), "testnet");
 const shelleyPath = path.join(
