@@ -423,13 +423,13 @@ device
     });
   }
 
-  function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
-    const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
-    // return new Promise(resolve => {
-    //   const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
-    //   resolve('borrar')
-    // });
-  }
+  // function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName) {
+  //   const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+  //   // return new Promise(resolve => {
+  //   //   const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+  //   //   resolve('borrar')
+  //   // });
+  // }
 
 
 
@@ -482,3 +482,6 @@ device
   // createTimeLockedMintPolicy('Test_0958')
   // downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
   // createThumbnail('yourfile_1.png')
+
+
+  const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
