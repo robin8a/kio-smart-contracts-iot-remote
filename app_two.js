@@ -427,12 +427,27 @@ device
       const createdMintAssetResult = await createMintAsset(
         pWalletName,
         createdTimeLockedMintPolicyResult.pMintScript,
-
+        pAssetName, 
+        pTokenName, 
+        pIpfsImage, 
+        pIpfsImageDescription, 
+        pIpfsImageType, 
+        pThumbnailImage
       )
-
+      resolve(createdMintAssetResult)
     });
   }
   
+  // const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
+  //   pWalletName, 
+  //   pAssetName, 
+  //   pTokenName, 
+  //   pIpfsImage, 
+  //   pIpfsImageDescription, 
+  //   pIpfsImageType, 
+  //   pThumbnailImage
+  // )
+  // console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
 
   // createTimeLockedMintPolicy('Test_0958')
   // downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
