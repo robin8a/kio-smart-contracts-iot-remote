@@ -457,7 +457,7 @@ device
   const wallet2 = cardanocliJs.wallet('Test_0958')
   const txOut_amount = assets.reduce((result, asset) => {
     
-    const ASSET_ID = POLICY_ID + "." + asset.id
+    const ASSET_ID = "POLICY_ID" + "." + asset.id
     result[ASSET_ID] = 1
     return result
 
