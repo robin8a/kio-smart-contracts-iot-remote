@@ -354,7 +354,7 @@ device
     });
   }
 
-  const buildTransaction = (tx) => {
+  const buildTransaction = async (tx) => {
     const raw = cardanocliJs.transactionBuildRaw(tx);
     const fee = cardanocliJs.transactionCalculateMinFee({
       ...tx,
@@ -364,7 +364,7 @@ device
     return cardanocliJs.transactionBuildRaw({ ...tx, fee });
   };
   
-  const signTransaction = (wallet, tx, script) => {
+  const signTransaction = async (wallet, tx, script) => {
     return cardanocliJs.transactionSign({
       signingKeys: [wallet.payment.skey, wallet.payment.skey],
       scriptFile: script,
@@ -379,7 +379,7 @@ device
       const POLICY_ID = cardanocliJs.transactionPolicyid(pMintScript)
       const ASSET_NAME = pAssetName
       const ASSET_ID = POLICY_ID + "." + ASSET_NAME
-      debugger
+      
       const metadata = {
         721: {
           [POLICY_ID]: {
@@ -393,7 +393,7 @@ device
           },
         },
       };
-      debugger
+      
       // const metadata = {
       //   721: {
       //     [POLICY_ID]: {
@@ -444,8 +444,6 @@ device
   async function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
     return new Promise(async resolve => {
       const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
-      debugger
-      createMintAsset(pWalletName, createdTimeLockedMintPolicyResult.mintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
       const createdMintAssetResult = await createMintAsset(
         pWalletName,
         createdTimeLockedMintPolicyResult.mintScript,
