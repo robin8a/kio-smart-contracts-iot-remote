@@ -313,7 +313,7 @@ device
 
   async function createTimeLockedMintPolicy(pWalletName) {
     return new Promise(resolve => {
-      const fs = require("fs")
+      // const fs = require("fs")
 
       const wallet = cardanocliJs.wallet(pWalletName)
 
@@ -337,17 +337,27 @@ device
       // The __dirname in a node script returns the path of the folder where the current JavaScript file resides. __filename and _
       // _dirname are used to get the filename and directory name of the currently executing file.
       // ToDo change mint-policy.json to <DDMMYYHH24>-<WALLET_NAME>-mint-policy.json
-      fs.writeFileSync(__dirname + "/policies/mint-policy.json", JSON.stringify(mintScript, null, 2))
-      fs.writeFileSync(__dirname + "/policies/mint-policy-id.txt", cardanocliJs.transactionPolicyid(mintScript))
+      const mintPolicyJsonPath = __dirname + '/policies/mint-policy.json'
+      const mintPolicyIdTxt = __dirname + "/policies/mint-policy-id.txt"
 
-      resolve(mintScript);
+      fs.writeFileSync(mintPolicyJsonPath, JSON.stringify(mintScript, null, 2))
+      fs.writeFileSync(mintPolicyIdTxt, cardanocliJs.transactionPolicyid(mintScript))
+
+      const mintScriptResult = {
+        mintScript: mintScript,
+        mintPolicyJsonPath: mintPolicyJsonPath,
+        mintPolicyIdTxt: mintPolicyIdTxt,
+      }
+
+      resolve(mintScriptResult)
       
     });
   }
 
-  async function mintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
+  async function createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
 
     return new Promise(resolve => {
+      const wallet = cardanocliJs.wallet(pWalletName)
 
       const POLICY_ID = cardano.transactionPolicyid(pMintScript)
       const ASSET_NAME = pAssetName
@@ -398,11 +408,32 @@ device
       const raw = buildTransaction(tx);
       const signed = signTransaction(wallet, raw, mintScript);
       const txHash = cardano.transactionSubmit(signed);
-    
-      resolve( 'ToDo change');
+      
+      const mintAssetResult = {
+        raw: raw,
+        signed: signed,
+        txHash: txHash,
+      }
+
+      resolve(mintAssetResult);
       
     });
   }
+
+  function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName) {
+    return new Promise(resolve => {
+      const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+      // createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
+      const createdMintAssetResult = await createMintAsset(
+        pWalletName,
+        createdTimeLockedMintPolicyResult.pMintScript,
+
+      )
+
+    });
+  }
+  
+
   // createTimeLockedMintPolicy('Test_0958')
   // downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
   // createThumbnail('yourfile_1.png')
