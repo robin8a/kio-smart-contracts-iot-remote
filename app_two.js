@@ -430,7 +430,7 @@ device
       createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
       const createdMintAssetResult = await createMintAsset(
         pWalletName,
-        createdTimeLockedMintPolicyResult.pMintScript,
+        createdTimeLockedMintPolicyResult.mintScript,
         pAssetName, 
         pTokenName, 
         pIpfsImage, 
