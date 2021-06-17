@@ -423,9 +423,9 @@ device
     });
   }
 
-  function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
+  async function createTimeLockedMintPolicyThenCreateMintAsset(pWalletName, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
     return new Promise(resolve => {
-      // const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
+      const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
       debugger
       // createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage)
       // const createdMintAssetResult = await createMintAsset(
