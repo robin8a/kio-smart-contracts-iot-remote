@@ -362,6 +362,7 @@ device
       txBody: raw,
     });
     tx.txOut[0].amount.lovelace -= fee;
+    debugger
     return cardanocliJs.transactionBuildRaw({ ...tx, fee });
   };
   
