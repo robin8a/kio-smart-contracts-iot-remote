@@ -836,7 +836,6 @@ class CardanocliJs {
    * @returns {path}
    */
   transactionBuildRaw(options) {
-    debugger
     if (!(options && options.txIn && options.txOut))
       throw new Error("TxIn and TxOut required");
     if (this.httpProvider && typeof window !== "undefined") {
@@ -847,7 +846,6 @@ class CardanocliJs {
         method: "POST",
         body: JSON.stringify(options),
       });
-      debugger
       return response.then((res) => res.text());
     }
     let UID = Math.random().toString(36).substr(2, 9);
@@ -864,7 +862,6 @@ class CardanocliJs {
     const auxScript = options.auxScript
       ? auxScriptToString(this.dir, options.auxScript)
       : "";
-    debugger
     execSync(`${this.cliPath} transaction build-raw \
                 ${txInString} \
                 ${txOutString} \
@@ -884,7 +881,6 @@ class CardanocliJs {
                 --fee ${options.fee ? options.fee : 0} \
                 --out-file ${this.dir}/tmp/tx_${UID}.raw \
                 ${this.era}`);
-    debugger
     return `${this.dir}/tmp/tx_${UID}.raw`;
   }
 

@@ -510,8 +510,8 @@ async function testMint() {
   // console.log('createdTimeLockedMintPolicyResult: ', createdTimeLockedMintPolicyResult)
   const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
     'Test_0958', 
-    '1706_1136_ASSET_NAME', // pAssetName, 
-    '1706_1136_TOKEN_NAME', // pTokenName
+    'ACME', // pAssetName, 
+    'ACME', // pTokenName
     'ipfs://QmbeLpUmznRs7AY8aGxixDN3KAsjP2dFpvCa1XkXyzQ7HF', // pIpfsImage
     'pIpfsImageDescription', //pIpfsImageDescription 
     'image/png', //pIpfsImageType
