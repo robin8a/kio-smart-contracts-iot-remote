@@ -426,7 +426,7 @@ device
               lovelace: wallet.balance().value.lovelace - cardanocliJs.toLovelace(1),
             },
           }, //value going back to wallet
-          { address: receiver, value: { lovelace: cardanocliJs.toLovelace(1) } }, //value going to receiver
+          { address: wallet.paymentAddr, value: { lovelace: cardanocliJs.toLovelace(1) } }, //value going to receiver
         ],
         metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
       };
