@@ -354,29 +354,6 @@ device
     });
   }
 
-  const buildTransaction = async (tx) => {
-    debugger
-    const raw = cardanocliJs.transactionBuildRaw(tx);
-    debugger
-    const fee = cardanocliJs.transactionCalculateMinFee({
-      ...tx,
-      txBody: raw,
-    });
-    debugger
-    tx.txOut[0].amount.lovelace -= fee;
-    debugger
-    return cardanocliJs.transactionBuildRaw({ ...tx, fee });
-  };
-  
-  const signTransaction = async (wallet, tx, script) => {
-    debugger
-    return cardanocliJs.transactionSign({
-      signingKeys: [wallet.payment.skey, wallet.payment.skey],
-      scriptFile: script,
-      txBody: tx,
-    });
-  };
-
   async function createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
 
     return new Promise(resolve => {
@@ -398,7 +375,6 @@ device
           },
         },
       };
-      
 
       const tx = {
         txIn: wallet.balance().utxo,
@@ -416,48 +392,12 @@ device
         witnessCount: 2,
       };
 
-      // const tx = {
-      //   txIn: wallet.balance().utxo,
-      //   txOut: [
-      //     {
-      //       address: wallet.paymentAddr,
-      //       value: {
-      //         lovelace: 0,
-      //         ...wallet.balance().value, [ASSET_ID]: 1,
-      //       },
-            
-      //     },
-      //   ],
-      //   mint: [{ action: "mint", amount: 1, token: ASSET_ID }],
-      //   metadata,
-      //   witnessCount: 2,
-      // };
-      debugger
+      const raw = await createTransaction(tx);
+      const signed = await signTransaction(wallet, raw);
 
-      // // create raw transaction
-      // let txInfo = {
-      //   txIn: cardanocliJs.queryUtxo(wallet.paymentAddr),
-      //   txOut: [
-      //     {
-      //       address: wallet.paymentAddr,
-      //       value: {
-      //         lovelace: wallet.balance().value.lovelace - cardanocliJs.toLovelace(1),
-      //       },
-      //     }, //value going back to wallet
-      //     { address: wallet.paymentAddr, value: { lovelace: cardanocliJs.toLovelace(1) } }, //value going to receiver
-      //   ],
-      //   metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
-      // };
-
-      debugger
-      
-      const raw = buildTransaction(tx);
-      debugger
-      const signed = signTransaction(wallet, raw, mintScript);
-      debugger
+      console.log(cardanocliJs.transactionView({ txFile: signed }));
       const txHash = cardanocliJs.transactionSubmit(signed);
-      debugger
-      
+
       const mintAssetResult = {
         raw: raw,
         signed: signed,
@@ -488,6 +428,23 @@ device
       resolve('borrar')
     });
   }
+
+  const createTransaction = async (tx) => {
+    let raw = cardanocliJs.transactionBuildRaw(tx);
+    let fee = cardanocliJs.transactionCalculateMinFee({
+      ...tx,
+      txBody: raw,
+    });
+    tx.txOut[0].value.lovelace -= fee;
+    return cardanocliJs.transactionBuildRaw({ ...tx, fee });
+  };
+  
+  const signTransaction = async (wallet, tx, script) => {
+    return cardanocliJs.transactionSign({
+      signingKeys: [wallet.payment.skey, wallet.payment.skey],
+      txBody: tx,
+    });
+  };
 
   // const wallet2 = cardanocliJs.wallet('Test_0958')
   // const txOut_amount = assets.reduce((result, asset) => {
