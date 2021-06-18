@@ -410,7 +410,7 @@ device
         ],
         mint: {
           action: [{ type: "mint", quantity: 1, asset: ASSET_ID }],
-          script: [mintScript],
+          script: [pMintScript],
         },
         metadata, // For NFTs
         witnessCount: 2,
