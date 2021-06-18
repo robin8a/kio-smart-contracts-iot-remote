@@ -356,7 +356,7 @@ device
 
   async function createMintAsset(pWalletName, pMintScript, pAssetName, pTokenName, pIpfsImage, pIpfsImageDescription, pIpfsImageType, pThumbnailImage) {
 
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
       const wallet = cardanocliJs.wallet(pWalletName)
       const POLICY_ID = cardanocliJs.transactionPolicyid(pMintScript)
       const ASSET_NAME = pAssetName
