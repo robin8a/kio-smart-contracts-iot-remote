@@ -399,7 +399,7 @@ device
         },
       };
       
-      const tx = {
+      const tx2 = {
         txIn: wallet.balance().utxo,
         txOut: [
           {
@@ -414,6 +414,23 @@ device
         metadata,
         witnessCount: 2,
       };
+      debugger
+
+      // create raw transaction
+      let txInfo = {
+        txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
+        txOut: [
+          {
+            address: sender.paymentAddr,
+            value: {
+              lovelace: sender.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
+            },
+          }, //value going back to sender
+          { address: receiver, value: { lovelace: cardanocliJs.toLovelace(transactionAmount) } }, //value going to receiver
+        ],
+        metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
+      };
+
       debugger
       
       const raw = buildTransaction(tx);
