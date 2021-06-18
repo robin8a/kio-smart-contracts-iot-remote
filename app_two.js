@@ -418,14 +418,14 @@ device
 
       // create raw transaction
       let txInfo = {
-        txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
+        txIn: cardanocliJs.queryUtxo(wallet.paymentAddr),
         txOut: [
           {
-            address: sender.paymentAddr,
+            address: wallet.paymentAddr,
             value: {
-              lovelace: sender.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
+              lovelace: wallet.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
             },
-          }, //value going back to sender
+          }, //value going back to wallet
           { address: receiver, value: { lovelace: cardanocliJs.toLovelace(transactionAmount) } }, //value going to receiver
         ],
         metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
