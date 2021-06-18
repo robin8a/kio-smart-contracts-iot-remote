@@ -462,7 +462,7 @@ device
   //     ...wallet2.balance().amount
   // })
   
-  console.log('txOut_amount: ', txOut_amount)
+  // console.log('txOut_amount: ', txOut_amount)
   // createTimeLockedMintPolicy('Test_0958')
   // downloadFileFromAWSS3UploadIPFS('10_lll_rrr.png')
   // createThumbnail('yourfile_1.png')
