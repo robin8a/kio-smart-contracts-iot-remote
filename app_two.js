@@ -399,37 +399,55 @@ device
         },
       };
       
-      const tx2 = {
+
+      const tx = {
         txIn: wallet.balance().utxo,
         txOut: [
           {
             address: wallet.paymentAddr,
-            value: {
-              lovelace: 0,
-            },
-            amount: { ...wallet.balance().value, [ASSET_ID]: 1 },
+            value: { ...wallet.balance().value, [ASSET_ID]: 1 },
           },
         ],
-        mint: [{ action: "mint", amount: 1, token: ASSET_ID }],
-        metadata,
+        mint: {
+          action: [{ type: "mint", quantity: 1, asset: ASSET_ID }],
+          script: [mintScript],
+        },
+        metadata, // For NFTs
         witnessCount: 2,
       };
+
+      // const tx = {
+      //   txIn: wallet.balance().utxo,
+      //   txOut: [
+      //     {
+      //       address: wallet.paymentAddr,
+      //       value: {
+      //         lovelace: 0,
+      //         ...wallet.balance().value, [ASSET_ID]: 1,
+      //       },
+            
+      //     },
+      //   ],
+      //   mint: [{ action: "mint", amount: 1, token: ASSET_ID }],
+      //   metadata,
+      //   witnessCount: 2,
+      // };
       debugger
 
-      // create raw transaction
-      let txInfo = {
-        txIn: cardanocliJs.queryUtxo(wallet.paymentAddr),
-        txOut: [
-          {
-            address: wallet.paymentAddr,
-            value: {
-              lovelace: wallet.balance().value.lovelace - cardanocliJs.toLovelace(1),
-            },
-          }, //value going back to wallet
-          { address: wallet.paymentAddr, value: { lovelace: cardanocliJs.toLovelace(1) } }, //value going to receiver
-        ],
-        metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
-      };
+      // // create raw transaction
+      // let txInfo = {
+      //   txIn: cardanocliJs.queryUtxo(wallet.paymentAddr),
+      //   txOut: [
+      //     {
+      //       address: wallet.paymentAddr,
+      //       value: {
+      //         lovelace: wallet.balance().value.lovelace - cardanocliJs.toLovelace(1),
+      //       },
+      //     }, //value going back to wallet
+      //     { address: wallet.paymentAddr, value: { lovelace: cardanocliJs.toLovelace(1) } }, //value going to receiver
+      //   ],
+      //   metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
+      // };
 
       debugger
       
