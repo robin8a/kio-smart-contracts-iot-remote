@@ -404,6 +404,9 @@ device
         txOut: [
           {
             address: wallet.paymentAddr,
+            value: {
+              lovelace: 0,
+            },
             amount: { ...wallet.balance().value, [ASSET_ID]: 1 },
           },
         ],
