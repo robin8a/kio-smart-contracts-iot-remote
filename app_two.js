@@ -430,19 +430,28 @@ device
   }
 
   const createTransaction = async (tx) => {
-    let raw = cardanocliJs.transactionBuildRaw(tx);
-    let fee = cardanocliJs.transactionCalculateMinFee({
-      ...tx,
-      txBody: raw,
+    return new Promise(async resolve => {
+      let raw = cardanocliJs.transactionBuildRaw(tx);
+      let fee = cardanocliJs.transactionCalculateMinFee({
+        ...tx,
+        txBody: raw,
+      });
+      tx.txOut[0].value.lovelace -= fee;
+      // return cardanocliJs.transactionBuildRaw({ ...tx, fee });
+      resolve(cardanocliJs.transactionBuildRaw({ ...tx, fee }));
     });
-    tx.txOut[0].value.lovelace -= fee;
-    return cardanocliJs.transactionBuildRaw({ ...tx, fee });
   };
   
   const signTransaction = async (wallet, tx, script) => {
-    return cardanocliJs.transactionSign({
-      signingKeys: [wallet.payment.skey, wallet.payment.skey],
-      txBody: tx,
+    return new Promise(async resolve => {
+      // return cardanocliJs.transactionSign({
+      //   signingKeys: [wallet.payment.skey, wallet.payment.skey],
+      //   txBody: tx,
+      // });
+      resolve(cardanocliJs.transactionSign({
+        signingKeys: [wallet.payment.skey, wallet.payment.skey],
+        txBody: tx,
+      }));
     });
   };
 
