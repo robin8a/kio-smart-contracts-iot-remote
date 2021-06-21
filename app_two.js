@@ -492,4 +492,4 @@ async function testMint() {
   console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
 }
 
-testMint()
+// testMint()
