@@ -271,7 +271,7 @@ device
           if (err) {
               throw err
           }
-          await fs.writeSync('./'+pFileName, data.Body)
+          await fs.writeFileSync('./'+pFileName, data.Body)
           console.log('downloadFileFromAWSS3UploadIPFS: file downloaded successfully')
 
           var pathFileThumbnail = pFileName.split('.')[0]
