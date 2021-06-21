@@ -234,14 +234,17 @@ device
               cidVersion: 0
           }
       };
+      debugger
 
       pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
           //handle results here
           console.log('uploadFileToIPFS: pinFileToIPFS: result: ', result);
           resolve(result)
+          debugger
           // return result
       }).catch((err) => {
           //handle error here
+          debugger
           console.log('uploadFileToIPFS: pinFileToIPFS: err: ', err);
           resolve(err)
           // return err
@@ -275,8 +278,11 @@ device
           const resultcreateThumbnail = await createThumbnail(pFileName)
           console.log('downloadFileFromAWSS3UploadIPFS: resultcreateThumbnail: ', resultcreateThumbnail)
           
+          debugger
           const resultCompleteImage = await uploadFileToIPFS(pFileName)
+          debugger
           const resultThumbnailImage = await uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
+          debugger
 
           console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultCompleteImage: ', resultCompleteImage)
           console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultThumbnailImage: ', resultThumbnailImage)
