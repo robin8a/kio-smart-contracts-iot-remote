@@ -274,17 +274,14 @@ device
               cidVersion: 0
           }
       };
-      // debugger
 
       pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
           //handle results here
           console.log('uploadFileToIPFS: pinFileToIPFS: result: ', result);
           resolve(result)
-          // debugger
           // return result
       }).catch((err) => {
           //handle error here
-          // debugger
           console.log('uploadFileToIPFS: pinFileToIPFS: err: ', err);
           resolve(err)
           // return err
@@ -318,11 +315,8 @@ device
           const resultcreateThumbnail = await createThumbnail(pFileName)
           console.log('downloadFileFromAWSS3UploadIPFS: resultcreateThumbnail: ', resultcreateThumbnail)
           
-          // debugger
           const resultCompleteImage = await uploadFileToIPFS(pFileName)
-          // debugger
           const resultThumbnailImage = await uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
-          // debugger
 
           console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultCompleteImage: ', resultCompleteImage)
           console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultThumbnailImage: ', resultThumbnailImage)
@@ -406,7 +400,6 @@ device
       const POLICY_ID = cardanocliJs.transactionPolicyid(pMintScript)
       const ASSET_NAME = pAssetName
       const ASSET_ID = POLICY_ID + "." + ASSET_NAME
-      // debugger
       const metadata = {
         721: {
           [POLICY_ID]: {
@@ -420,7 +413,6 @@ device
           },
         },
       };
-      // debugger
       const tx = {
         txIn: wallet.balance().utxo,
         txOut: [
@@ -436,11 +428,8 @@ device
         metadata, // For NFTs
         witnessCount: 2,
       };
-      // debugger
       const raw = await createTransaction(tx);
-      // debugger
       const signed = await signTransaction(wallet, raw);
-      // debugger
 
       console.log(cardanocliJs.transactionView({ txFile: signed }));
       const txHash = cardanocliJs.transactionSubmit(signed);
@@ -452,7 +441,6 @@ device
         signed: signed,
         txHash: txHash,
       }
-      // debugger
       resolve(mintAssetResult);
       
     });
@@ -471,7 +459,7 @@ device
         pIpfsImageType, 
         pThumbnailImage
       )
-      // debugger
+      debugger
       resolve(createdMintAssetResult)
     });
   }
