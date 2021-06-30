@@ -243,7 +243,7 @@ device
       )
       debugger
       if (createdTimeLockedMintPolicyThenCreateMintAssetResult !== undefined) {
-        console.log('## device.on message Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult);
+        console.log('## device.on message Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI createdTimeLockedMintPolicyThenCreateMintAssetResult: ', JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
         device.publish('topic_2', JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
       }
     }
