@@ -231,7 +231,6 @@ device
       var pIpfsImageDescription = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pIpfsImageDescription
       var pIpfsImageType = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pIpfsImageType
       var pThumbnailImage = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pThumbnailImage
-      debugger
 
       const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
         pWalletName, // pWalletName
@@ -242,7 +241,7 @@ device
         pIpfsImageType, //pIpfsImageType
         pThumbnailImage, // pThumbnailImage
       )
-      
+      debugger
       if (createdTimeLockedMintPolicyThenCreateMintAssetResult !== undefined) {
         console.log('## device.on message Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult);
         device.publish('topic_2', JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
