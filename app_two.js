@@ -232,7 +232,7 @@ device
       var pIpfsImageType = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pIpfsImageType
       var pThumbnailImage = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pThumbnailImage
 
-      const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
+      const createdTimeLockedMintPolicyThenCreateMintAssetResult = await createTimeLockedMintPolicyThenCreateMintAsset(
         pWalletName, // pWalletName
         pAssetName, // pAssetName, 
         pTokenName, // pTokenName
