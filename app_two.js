@@ -444,6 +444,8 @@ device
 
       console.log(cardanocliJs.transactionView({ txFile: signed }));
       const txHash = cardanocliJs.transactionSubmit(signed);
+      
+      debugger
 
       const mintAssetResult = {
         raw: raw,
