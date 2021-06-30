@@ -367,7 +367,6 @@ device
       const { slot } = cardanocliJs.queryTip()
 
       const SLOTS_PER_EPOCH = 5 * 24 * 60 * 60 // 432000
-
       const mintScript = {
           type: "all",
           scripts: [
@@ -386,7 +385,7 @@ device
       // ToDo change mint-policy.json to <DDMMYYHH24>-<WALLET_NAME>-mint-policy.json
       const mintPolicyJsonPath = __dirname + '/policies/mint-policy.json'
       const mintPolicyIdTxt = __dirname + "/policies/mint-policy-id.txt"
-
+      
       fs.writeFileSync(mintPolicyJsonPath, JSON.stringify(mintScript, null, 2))
       fs.writeFileSync(mintPolicyIdTxt, cardanocliJs.transactionPolicyid(mintScript))
 
@@ -408,7 +407,7 @@ device
       const POLICY_ID = cardanocliJs.transactionPolicyid(pMintScript)
       const ASSET_NAME = pAssetName
       const ASSET_ID = POLICY_ID + "." + ASSET_NAME
-      
+      debugger
       const metadata = {
         721: {
           [POLICY_ID]: {
@@ -422,7 +421,7 @@ device
           },
         },
       };
-
+      debugger
       const tx = {
         txIn: wallet.balance().utxo,
         txOut: [
@@ -438,9 +437,11 @@ device
         metadata, // For NFTs
         witnessCount: 2,
       };
-
+      debugger
       const raw = await createTransaction(tx);
+      debugger
       const signed = await signTransaction(wallet, raw);
+      debugger
 
       console.log(cardanocliJs.transactionView({ txFile: signed }));
       const txHash = cardanocliJs.transactionSubmit(signed);
