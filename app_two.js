@@ -274,17 +274,17 @@ device
               cidVersion: 0
           }
       };
-      debugger
+      // debugger
 
       pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
           //handle results here
           console.log('uploadFileToIPFS: pinFileToIPFS: result: ', result);
           resolve(result)
-          debugger
+          // debugger
           // return result
       }).catch((err) => {
           //handle error here
-          debugger
+          // debugger
           console.log('uploadFileToIPFS: pinFileToIPFS: err: ', err);
           resolve(err)
           // return err
@@ -318,11 +318,11 @@ device
           const resultcreateThumbnail = await createThumbnail(pFileName)
           console.log('downloadFileFromAWSS3UploadIPFS: resultcreateThumbnail: ', resultcreateThumbnail)
           
-          debugger
+          // debugger
           const resultCompleteImage = await uploadFileToIPFS(pFileName)
-          debugger
+          // debugger
           const resultThumbnailImage = await uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
-          debugger
+          // debugger
 
           console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultCompleteImage: ', resultCompleteImage)
           console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultThumbnailImage: ', resultThumbnailImage)
@@ -406,7 +406,7 @@ device
       const POLICY_ID = cardanocliJs.transactionPolicyid(pMintScript)
       const ASSET_NAME = pAssetName
       const ASSET_ID = POLICY_ID + "." + ASSET_NAME
-      debugger
+      // debugger
       const metadata = {
         721: {
           [POLICY_ID]: {
@@ -420,7 +420,7 @@ device
           },
         },
       };
-      debugger
+      // debugger
       const tx = {
         txIn: wallet.balance().utxo,
         txOut: [
@@ -436,11 +436,11 @@ device
         metadata, // For NFTs
         witnessCount: 2,
       };
-      debugger
+      // debugger
       const raw = await createTransaction(tx);
-      debugger
+      // debugger
       const signed = await signTransaction(wallet, raw);
-      debugger
+      // debugger
 
       console.log(cardanocliJs.transactionView({ txFile: signed }));
       const txHash = cardanocliJs.transactionSubmit(signed);
@@ -450,7 +450,7 @@ device
         signed: signed,
         txHash: txHash,
       }
-      debugger
+      // debugger
       resolve(mintAssetResult);
       
     });
@@ -469,7 +469,7 @@ device
         pIpfsImageType, 
         pThumbnailImage
       )
-      debugger
+      // debugger
       resolve(createdMintAssetResult)
     });
   }
