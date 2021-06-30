@@ -207,6 +207,46 @@ device
         device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
       }
     }
+
+    // createTimeLockedMintPolicyThenCreateMintAsset
+    
+    
+    if (obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI !== undefined) { 
+
+      // createTimeLockedMintPolicyThenCreateMintAsset(
+      //   'Test_0958', 
+      //   'ACME', // pAssetName, 
+      //   'ACME', // pTokenName
+      //   'ipfs://QmbeLpUmznRs7AY8aGxixDN3KAsjP2dFpvCa1XkXyzQ7HF', // pIpfsImage
+      //   'pIpfsImageDescription', //pIpfsImageDescription 
+      //   'image/png', //pIpfsImageType
+      //   'ipfs://QmQ7AeHSWtfrcFqmjUUGet6YbfSWGuiRo9L9emWco3tVhk', // pThumbnailImage
+      // )
+
+      console.log('## device.on message Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI');
+      var pWalletName = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pWalletName
+      var pAssetName = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pAssetName
+      var pTokenName = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pTokenName
+      var pIpfsImage = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pIpfsImage
+      var pIpfsImageDescription = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pIpfsImageDescription
+      var pIpfsImageType = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pIpfsImageType
+      var pThumbnailImage = obj.Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI[0].pThumbnailImage
+
+      const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
+        pWalletName, // pWalletName
+        pAssetName, // pAssetName, 
+        pTokenName, // pTokenName
+        pIpfsImage, // pIpfsImage
+        pIpfsImageDescription, //pIpfsImageDescription 
+        pIpfsImageType, //pIpfsImageType
+        pThumbnailImage, // pThumbnailImage
+      )
+      
+      if (createdTimeLockedMintPolicyThenCreateMintAssetResult !== undefined) {
+        console.log('## device.on message Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult);
+        device.publish('topic_2', JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
+      }
+    }
     
   });
 
@@ -481,7 +521,7 @@ async function testMint() {
   // const createdTimeLockedMintPolicyResult = await createTimeLockedMintPolicy(pWalletName)
   // console.log('createdTimeLockedMintPolicyResult: ', createdTimeLockedMintPolicyResult)
   const createdTimeLockedMintPolicyThenCreateMintAssetResult = createTimeLockedMintPolicyThenCreateMintAsset(
-    'Test_0958', 
+    'Test_0958', // pWalletName
     'ACME', // pAssetName, 
     'ACME', // pTokenName
     'ipfs://QmbeLpUmznRs7AY8aGxixDN3KAsjP2dFpvCa1XkXyzQ7HF', // pIpfsImage
