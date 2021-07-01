@@ -200,7 +200,7 @@ device
       debugger
       console.log("TxHash: " + txHash);
 
-      device.publish('topic_2', JSON.stringify(txHash));
+      device.publish('topic_2', JSON.stringify({txHash: txHash}));
 
       // device.publish('topic_2', JSON.stringify({contador: cont}));
       // cont++;
