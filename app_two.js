@@ -39,6 +39,8 @@ const config = require('./aws_credentials.json');
 // Thumbnail
 const sharp = require('sharp');
 
+// Control
+var cont = 0;
 
 //
 // Replace the values of '<YourUniqueClientIdentifier>' and '<YourCustomEndpoint>'
@@ -202,7 +204,8 @@ device
       // console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
       // device.publish('topic_2', JSON.stringify(txHash));
 
-      device.publish('topic_2', "solo variables");
+      device.publish('topic_2', JSON.stringify({contador: cont}));
+      cont++;
     }
 
     if (obj.Upload_File_To_IPFS_From_UI !== undefined) { 
