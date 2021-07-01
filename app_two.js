@@ -133,8 +133,8 @@ device
     if (obj.Transfer_Funds_Between_Wallets_From_UI !== undefined) { 
       console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI');
 
-      var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
-      console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
+      var walletAddressOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_origin;
+      console.log('## device.on message Wallet Name Origin: ', walletAddressOrigin);
 
       var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_destination;
       console.log('## device.on message Wallet Address Destination: ', walletAddressDestination);
@@ -143,7 +143,7 @@ device
       console.log('## device.on message Transaction Amount: ', transactionAmount);
 
       //funded wallet
-      const sender = cardanocliJs.wallet(walletNameOrigin);
+      const sender = cardanocliJs.wallet(undefined,walletAddressOrigin);
       console.log(
         "Balance of Sender wallet: " +
           cardanocliJs.toAda(sender.balance().value.lovelace) +

@@ -405,48 +405,62 @@ class CardanocliJs {
    *
    * @param {string} account - Name of the account
    */
-  wallet(account) {
+  wallet(account, address) {
+    debugger
     if (this.httpProvider && typeof window !== "undefined") {
+      debugger
       let response = fetch(`${this.httpProvider}${account}/wallet`);
       return response.then((res) => res.json());
     }
     let paymentAddr = "No payment keys generated";
     let stakingAddr = "No staking keys generated";
 
-    fileException(() => {
-      paymentAddr = fs
-        .readFileSync(
-          `${this.dir}/priv/wallet/${account}/${account}.payment.addr`
-        )
-        .toString();
-    });
-    fileException(() => {
-      stakingAddr = fs
-        .readFileSync(
-          `${this.dir}/priv/wallet/${account}/${account}.stake.addr`
-        )
-        .toString();
-    });
+    if (account) {
+      fileException(() => {
+        paymentAddr = fs
+          .readFileSync(
+            `${this.dir}/priv/wallet/${account}/${account}.payment.addr`
+          )
+          .toString();
+      });
+      fileException(() => {
+        stakingAddr = fs
+          .readFileSync(
+            `${this.dir}/priv/wallet/${account}/${account}.stake.addr`
+          )
+          .toString();
+      });
+    }
+
+    if (address) {
+      debugger
+      paymentAddr = address
+    }
 
     let files = fs.readdirSync(`${this.dir}/priv/wallet/${account}`);
     let keysPath = {};
-    files.forEach((file) => {
-      let name = file.split(".")[1] + "." + file.split(".")[2];
-      setKeys(keysPath, name, `${this.dir}/priv/wallet/${account}/${file}`);
-    });
+
+    if (account) {
+      files.forEach((file) => {
+        let name = file.split(".")[1] + "." + file.split(".")[2];
+        setKeys(keysPath, name, `${this.dir}/priv/wallet/${account}/${file}`);
+      });
+    }
 
     const balance = () => {
       const utxos = this.queryUtxo(paymentAddr);
       const value = {};
+      debugger
       utxos.forEach((utxo) => {
         Object.keys(utxo.value).forEach((asset) => {
           if (!value[asset]) value[asset] = 0;
           value[asset] += utxo.value[asset];
         });
       });
-
+      debugger
       return { utxo: utxos, value };
     };
+    
     let reward = () => {
       let r;
       try {
