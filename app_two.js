@@ -144,12 +144,13 @@ device
 
       //funded wallet
       const sender = cardanocliJs.wallet(undefined,walletAddressOrigin);
+      debugger
       console.log(
         "Balance of Sender wallet: " +
           cardanocliJs.toAda(sender.balance().value.lovelace) +
           " ADA"
       );
-
+      debugger
       //receiver address
       const receiver = walletAddressDestination;
 
