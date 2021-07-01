@@ -168,6 +168,7 @@ device
         ],
         metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
       };
+      debugger
       let raw = cardanocliJs.transactionBuildRaw(txInfo);
 
       //calculate fee
@@ -176,21 +177,25 @@ device
         txBody: raw,
         witnessCount: 1,
       });
-
+      debugger
       //pay the fee by subtracting it from the sender utxo
       txInfo.txOut[0].value.lovelace -= fee;
+      debugger
 
       //create final transaction
       let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
+      debugger
 
       //sign the transaction
       let txSigned = cardanocliJs.transactionSign({
         txBody: tx,
         signingKeys: [sender.payment.skey],
       });
+      debugger
 
       //broadcast transaction
       let txHash = cardanocliJs.transactionSubmit(txSigned);
+      debugger
       console.log("TxHash: " + txHash);
 
       command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
