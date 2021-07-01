@@ -200,8 +200,6 @@ device
       debugger
       console.log("TxHash: " + txHash);
 
-      command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
-      console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
       device.publish('topic_2', JSON.stringify(txHash));
 
       // device.publish('topic_2', JSON.stringify({contador: cont}));
