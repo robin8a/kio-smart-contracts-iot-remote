@@ -437,10 +437,11 @@ class CardanocliJs {
       paymentAddr = address
     }
 
-    let files = fs.readdirSync(`${this.dir}/priv/wallet/${account}`);
+    
     let keysPath = {};
 
     if (account) {
+      let files = fs.readdirSync(`${this.dir}/priv/wallet/${account}`);
       files.forEach((file) => {
         let name = file.split(".")[1] + "." + file.split(".")[2];
         setKeys(keysPath, name, `${this.dir}/priv/wallet/${account}/${file}`);
@@ -460,7 +461,7 @@ class CardanocliJs {
       debugger
       return { utxo: utxos, value };
     };
-    
+
     let reward = () => {
       let r;
       try {
