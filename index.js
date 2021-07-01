@@ -406,9 +406,9 @@ class CardanocliJs {
    * @param {string} account - Name of the account
    */
   wallet(account, address) {
-    debugger
+    // debugger
     if (this.httpProvider && typeof window !== "undefined") {
-      debugger
+      // debugger
       let response = fetch(`${this.httpProvider}${account}/wallet`);
       return response.then((res) => res.json());
     }
@@ -433,7 +433,7 @@ class CardanocliJs {
     }
 
     if (address) {
-      debugger
+      // debugger
       paymentAddr = address
     }
 
@@ -451,14 +451,14 @@ class CardanocliJs {
     const balance = () => {
       const utxos = this.queryUtxo(paymentAddr);
       const value = {};
-      debugger
+      // debugger
       utxos.forEach((utxo) => {
         Object.keys(utxo.value).forEach((asset) => {
           if (!value[asset]) value[asset] = 0;
           value[asset] += utxo.value[asset];
         });
       });
-      debugger
+      // debugger
       return { utxo: utxos, value };
     };
 
