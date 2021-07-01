@@ -436,7 +436,6 @@ class CardanocliJs {
     });
 
     const balance = () => {
-      debugger
       const utxos = this.queryUtxo(paymentAddr);
       const value = {};
       utxos.forEach((utxo) => {

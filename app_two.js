@@ -1,6 +1,7 @@
 // ToDo test trasactions without funds
 // ToDo create a folder for IPFS images
 // ToDo topic_2 add to config.json
+// ToDo try cathc on TXs
 
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
