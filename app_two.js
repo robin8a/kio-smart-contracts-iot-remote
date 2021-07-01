@@ -144,63 +144,65 @@ device
       console.log('## device.on message Transaction Amount: ', transactionAmount);
 
       //funded wallet
-      const sender = cardanocliJs.wallet(walletNameOrigin);
-      console.log(
-        "Balance of Sender wallet: " +
-          cardanocliJs.toAda(sender.balance().value.lovelace) +
-          " ADA"
-      );
+      // const sender = cardanocliJs.wallet(walletNameOrigin);
+      // console.log(
+      //   "Balance of Sender wallet: " +
+      //     cardanocliJs.toAda(sender.balance().value.lovelace) +
+      //     " ADA"
+      // );
 
-      //receiver address
-      const receiver = walletAddressDestination;
+      // //receiver address
+      // const receiver = walletAddressDestination;
 
-      // create raw transaction
-      let txInfo = {
-        txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
-        txOut: [
-          {
-            address: sender.paymentAddr,
-            value: {
-              lovelace: sender.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
-            },
-          }, //value going back to sender
-          { address: receiver, value: { lovelace: cardanocliJs.toLovelace(transactionAmount) } }, //value going to receiver
-        ],
-        metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
-      };
-      debugger
-      let raw = cardanocliJs.transactionBuildRaw(txInfo);
+      // // create raw transaction
+      // let txInfo = {
+      //   txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
+      //   txOut: [
+      //     {
+      //       address: sender.paymentAddr,
+      //       value: {
+      //         lovelace: sender.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
+      //       },
+      //     }, //value going back to sender
+      //     { address: receiver, value: { lovelace: cardanocliJs.toLovelace(transactionAmount) } }, //value going to receiver
+      //   ],
+      //   metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
+      // };
+      // debugger
+      // let raw = cardanocliJs.transactionBuildRaw(txInfo);
 
-      //calculate fee
-      let fee = cardanocliJs.transactionCalculateMinFee({
-        ...txInfo,
-        txBody: raw,
-        witnessCount: 1,
-      });
-      debugger
-      //pay the fee by subtracting it from the sender utxo
-      txInfo.txOut[0].value.lovelace -= fee;
-      debugger
+      // //calculate fee
+      // let fee = cardanocliJs.transactionCalculateMinFee({
+      //   ...txInfo,
+      //   txBody: raw,
+      //   witnessCount: 1,
+      // });
+      // debugger
+      // //pay the fee by subtracting it from the sender utxo
+      // txInfo.txOut[0].value.lovelace -= fee;
+      // debugger
 
-      //create final transaction
-      let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
-      debugger
+      // //create final transaction
+      // let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
+      // debugger
 
-      //sign the transaction
-      let txSigned = cardanocliJs.transactionSign({
-        txBody: tx,
-        signingKeys: [sender.payment.skey],
-      });
-      debugger
+      // //sign the transaction
+      // let txSigned = cardanocliJs.transactionSign({
+      //   txBody: tx,
+      //   signingKeys: [sender.payment.skey],
+      // });
+      // debugger
 
-      //broadcast transaction
-      let txHash = cardanocliJs.transactionSubmit(txSigned);
-      debugger
-      console.log("TxHash: " + txHash);
+      // //broadcast transaction
+      // let txHash = cardanocliJs.transactionSubmit(txSigned);
+      // debugger
+      // console.log("TxHash: " + txHash);
 
-      command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
-      console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
-      device.publish('topic_2', JSON.stringify(txHash));
+      // command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
+      // console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
+      // device.publish('topic_2', JSON.stringify(txHash));
+
+      device.publish('topic_2', "solo variables");
     }
 
     if (obj.Upload_File_To_IPFS_From_UI !== undefined) { 
