@@ -145,7 +145,7 @@ device
       var transactionAmount = parseFloat(obj.Transfer_Funds_Between_Wallets_From_UI[0].transaction_amount);
       console.log('## device.on message Transaction Amount: ', transactionAmount);
 
-      funded wallet
+      // funded wallet
       const sender = cardanocliJs.wallet(walletNameOrigin);
       console.log(
         "Balance of Sender wallet: " +
