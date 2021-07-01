@@ -133,7 +133,7 @@ device
     if (obj.Transfer_Funds_Between_Wallets_From_UI !== undefined) { 
       console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI');
 
-      var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_origin;
+      var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
       console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
 
       var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_destination;
