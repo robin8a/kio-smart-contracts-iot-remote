@@ -1,0 +1,9 @@
+{
+    "cardano-cli": {
+        "cardano_node": "testnet",
+        "testnet-shelley-genesis-json": "testnet-shelley-genesis.json",
+        "network": "testnet-magic 1097911063",
+        "socketPath": "/opt/cardano/cnode/sockets/node0.socket",
+        "path": "public/"
+    }
+}

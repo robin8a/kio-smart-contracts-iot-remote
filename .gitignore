@@ -2,4 +2,4 @@ certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.cert.pem
 certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.private.key
 certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.public.key
 certs/kio-smart-contracts-iot-device/root-CA.crt
-aws_credentials.json
+config/credentials.json

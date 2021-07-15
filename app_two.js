@@ -1,6 +1,6 @@
 // ToDo test trasactions without funds
 // ToDo create a folder for IPFS images
-// ToDo topic_2 add to config.json
+// ToDo topic_2 add to credentials.json
 // ToDo try cathc on TXs
 
 var awsIot = require('aws-iot-device-sdk');
@@ -8,33 +8,32 @@ var shell = require('shelljs');
 const pinataSDK = require('@pinata/sdk');
 var AWS = require('aws-sdk');
 const assets = require("./assets.json")
+// module variables
+const credentials = require('./credentials.json');
+const config = require('./config/config.json');
 
 const CardanocliJs = require("./index.js");
 const os = require("os");
 const path = require("path");
 const fs = require('fs');
 
-const dir = path.join(os.homedir(), "testnet");
+const dir = path.join(os.homedir(), config.cardano-cli.cardano_node);
 const shelleyPath = path.join(
   os.homedir(),
-  "testnet",
-  "testnet-shelley-genesis.json"
+  config.cardano-cli.cardano_node,
+  config.cardano-cli.testnet-shelley-genesis-json
 );
 
 const cardanocliJs = new CardanocliJs({
-  network: "testnet-magic 1097911063",
+  network: config.cardano-cli.network,
   dir: dir,
   shelleyGenesisPath: shelleyPath,
-  // socketPath: path.join(os.homedir(), "testnet", "db", "socket"),
-  socketPath: "/opt/cardano/cnode/sockets/node0.socket",
+  socketPath: config.cardano-cli.socketPath,
 });
 
 
-const pinata = pinataSDK('8ae8c06d4e674e2c0487', 'be5bab6e2aa91194afa472f2a83f87d355bb738ec4a02e38341ef97c3a734674');
+const pinata = pinataSDK(credentials.pinhata_credentials.access_key_id, credentials.pinhata_credentials.secret_access_key);
 
-// AWS S3
-// module variables
-const config = require('./aws_credentials.json');
 
 // Thumbnail
 const sharp = require('sharp');
@@ -300,17 +299,17 @@ device
   
   async function downloadFileFromAWSS3UploadIPFS(pFileName) {
     return new Promise(resolve => {
-      const credentials = config.credentials;
+      const awsCredentials = credentials.aws_credentials;
 
       var s3 = new AWS.S3({
-        accessKeyId: credentials.access_key_id,
-        secretAccessKey: credentials.secret_access_key,
-        region: 'us-east-1'
+        accessKeyId: awsCredentials.access_key_id,
+        secretAccessKey: awsCredentials.secret_access_key,
+        region: awsCredentials.region
       })
 
       var params = {
-          Key: credentials.path+pFileName,
-          Bucket: credentials.bucket_name
+          Key: awsCredentials.path+pFileName,
+          Bucket: awsCredentials.bucket_name
       }
 
       s3.getObject(params, async function(err, data) {
