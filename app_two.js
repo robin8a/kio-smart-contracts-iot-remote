@@ -1,45 +1,46 @@
 // ToDo test trasactions without funds
 // ToDo create a folder for IPFS images
-// ToDo topic_2 add to credentials.json
-// ToDo try cathc on TXs
+// ToDo try catch on TXs
 
 var awsIot = require('aws-iot-device-sdk');
 var shell = require('shelljs');
 const pinataSDK = require('@pinata/sdk');
 var AWS = require('aws-sdk');
 const assets = require("./assets.json")
-// module variables
-const credentials = require('./credentials.json');
-const config = require('./config/config.json');
 
 const CardanocliJs = require("./index.js");
 const os = require("os");
 const path = require("path");
 const fs = require('fs');
-
-const dir = path.join(os.homedir(), config.cardano-cli.cardano_node);
-const shelleyPath = path.join(
-  os.homedir(),
-  config.cardano-cli.cardano_node,
-  config.cardano-cli.testnet-shelley-genesis-json
-);
-
-const cardanocliJs = new CardanocliJs({
-  network: config.cardano-cli.network,
-  dir: dir,
-  shelleyGenesisPath: shelleyPath,
-  socketPath: config.cardano-cli.socketPath,
-});
-
-
-const pinata = pinataSDK(credentials.pinhata_credentials.access_key_id, credentials.pinhata_credentials.secret_access_key);
-
-
 // Thumbnail
 const sharp = require('sharp');
 
-// Control
-var cont = 0;
+// Global variables from credential.json and config.json
+const credentials = require('./config/credentials.json')
+const credentialsAWS = credentials['aws_credentials']
+const credentialsPinata = credentials['pinata_credentials']
+const config = require('./config/config.json')
+const configCardanoCli = config['cardano_cli']
+const configAWSIoTDevice = config['aws_iot_device']
+
+// Cardano CLI instance
+const dir = path.join(os.homedir(), configCardanoCli.cardano_node);
+const shelleyPath = path.join(
+  os.homedir(),
+  configCardanoCli.cardano_node,
+  configCardanoCli.testnet_shelley_genesis_json
+);
+
+const cardanocliJs = new CardanocliJs({
+  network: configCardanoCli.network,
+  dir: dir,
+  shelleyGenesisPath: shelleyPath,
+  socketPath: configCardanoCli.socketPath,
+});
+
+// Piñata instance
+const pinata = pinataSDK(credentialsPinata.access_key_id, credentialsPinata.secret_access_key);
+
 
 //
 // Replace the values of '<YourUniqueClientIdentifier>' and '<YourCustomEndpoint>'
@@ -49,14 +50,14 @@ var cont = 0;
 // connection will be terminated.
 //
 var device = awsIot.device({
-    keyPath: 'certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.private.key',
-   certPath: 'certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.cert.pem',
-     caPath: 'certs/kio-smart-contracts-iot-device/root-CA.crt',
-   clientId: 'sdk-nodejs-e57c917f-032c-4778-8184-69116bc19f76',
-       host: 'az6wto8a6h0jn-ats.iot.us-east-1.amazonaws.com',
-     region: 'us-east-1',
-       port: 8883,
-      debug: true
+    keyPath: configAWSIoTDevice.keyPath,
+   certPath: configAWSIoTDevice.certPath,
+     caPath: configAWSIoTDevice.caPath,
+   clientId: configAWSIoTDevice.clientId,
+       host: configAWSIoTDevice.host,
+     region: configAWSIoTDevice.region,
+       port: configAWSIoTDevice.port,
+      debug: configAWSIoTDevice.debug
  });
 
  const createWallet = (account) => {
@@ -77,8 +78,8 @@ var device = awsIot.device({
 device
   .on('connect', function() {
     console.log('connect');
-    device.subscribe('topic_1');
-    device.publish('topic_2', JSON.stringify({ test_data: 1}));
+    device.subscribe(configAWSIoTDevice.topic_subscribe);
+    device.publish(configAWSIoTDevice.topic_publish, JSON.stringify({ test_data: 1}));
   });
 
 device
@@ -100,7 +101,7 @@ device
         console.log('## device.on message Command_From_UI command_from_ui: ', command_from_ui);
         command_from_ui_result = shell.exec(command_from_ui, {silent:true}).stdout;
         console.log('## device.on message Command_From_UI command_from_ui_result: ', command_from_ui_result);
-        device.publish('topic_2', JSON.stringify(command_from_ui_result));
+        device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_ui_result));
     }
 
     if (obj.Command_From_UI_Query_Tip !== undefined) {
@@ -110,7 +111,7 @@ device
       console.log('## device.on message Command_From_UI_Query_Tip command_from_ui: ', command_from_ui_query_tip);
       command_from_ui_query_tip_result = cardanocliJs.queryTip();
       console.log('## device.on message Command_From_UI_Query_Tip command_from_ui_result: ', command_from_ui_query_tip_result);
-      device.publish('topic_2', JSON.stringify(command_from_ui_query_tip_result));
+      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_ui_query_tip_result));
     }
 
     if (obj.Create_Wallet_From_UI !== undefined) { 
@@ -119,7 +120,7 @@ device
       console.log('## device.on message Wallet Name: ', walletName);
       command_from_create_wallet_result = createWallet(walletName);
       console.log('## device.on message Create_Wallet_From_UI command_from_ui_result: ', command_from_create_wallet_result);
-      device.publish('topic_2', JSON.stringify(command_from_create_wallet_result));
+      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_create_wallet_result));
     }
 
     if (obj.Get_Wallet_Balance_By_Name_From_UI !== undefined) { 
@@ -129,7 +130,7 @@ device
       // command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance().value.lovelace;
       command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
       console.log('## device.on message Get_Wallet_Balance_By_Name_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
-      device.publish('topic_2', JSON.stringify(command_from_get_wallet_balance_by_name_result));
+      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_get_wallet_balance_by_name_result));
     }
     
     if (obj.Transfer_Funds_Between_Wallets_From_UI !== undefined) { 
@@ -199,10 +200,8 @@ device
       debugger
       console.log("TxHash: " + txHash);
 
-      device.publish('topic_2', JSON.stringify({txHash: txHash}));
+      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify({txHash: txHash}));
 
-      // device.publish('topic_2', JSON.stringify({contador: cont}));
-      // cont++;
     }
 
     if (obj.Upload_File_To_IPFS_From_UI !== undefined) { 
@@ -212,7 +211,7 @@ device
       command_from_upload_file_to_IPFS_result = await downloadFileFromAWSS3UploadIPFS(fileName);
       if (command_from_upload_file_to_IPFS_result !== undefined) {
         console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
-        device.publish('topic_2', JSON.stringify(command_from_upload_file_to_IPFS_result));
+        device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_upload_file_to_IPFS_result));
       }
     }
 
@@ -252,7 +251,7 @@ device
       debugger
       if (createdTimeLockedMintPolicyThenCreateMintAssetResult !== undefined) {
         console.log('## device.on message Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI createdTimeLockedMintPolicyThenCreateMintAssetResult: ', JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
-        device.publish('topic_2', JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
+        device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
       }
     }
     
