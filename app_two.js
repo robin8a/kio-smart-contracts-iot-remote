@@ -22,6 +22,7 @@ const credentialsPinata = credentials['pinata_credentials']
 const config = require('./config/config.json')
 const configCardanoCli = config['cardano_cli']
 const configAWSIoTDevice = config['aws_iot_device']
+const configLocalFiles = config['local_files']
 
 // Cardano CLI instance
 const dir = path.join(os.homedir(), configCardanoCli.cardano_node);
@@ -301,30 +302,30 @@ device
       const awsCredentials = credentials.aws_credentials;
 
       var s3 = new AWS.S3({
-        accessKeyId: awsCredentials.access_key_id,
-        secretAccessKey: awsCredentials.secret_access_key,
-        region: awsCredentials.region
+        accessKeyId: credentialsAWS.access_key_id,
+        secretAccessKey: credentialsAWS.secret_access_key,
+        region: credentialsAWS.region
       })
 
       var params = {
-          Key: awsCredentials.path+pFileName,
-          Bucket: awsCredentials.bucket_name
+          Key: credentialsAWS.path+pFileName,
+          Bucket: credentialsAWS.bucket_name
       }
 
       s3.getObject(params, async function(err, data) {
           if (err) {
               throw err
           }
-          await fs.writeFileSync('./'+pFileName, data.Body)
+          await fs.writeFileSync(configLocalFiles.write_aws_s3_path+pFileName, data.Body)
           console.log('downloadFileFromAWSS3UploadIPFS: file downloaded successfully')
-
-          var pathFileThumbnail = pFileName.split('.')[0]
+          debugger
+          var pathFileThumbnail = configLocalFiles.write_aws_s3_path+pFileName.split('.')[0]
           const resultcreateThumbnail = await createThumbnail(pFileName)
           console.log('downloadFileFromAWSS3UploadIPFS: resultcreateThumbnail: ', resultcreateThumbnail)
-          
-          const resultCompleteImage = await uploadFileToIPFS(pFileName)
+          debugger
+          const resultCompleteImage = await uploadFileToIPFS(configLocalFiles.write_aws_s3_path+pFileName)
           const resultThumbnailImage = await uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
-
+          debugger
           console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultCompleteImage: ', resultCompleteImage)
           console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultThumbnailImage: ', resultThumbnailImage)
 
@@ -347,9 +348,9 @@ device
 
   async function createThumbnail(pFileName) {
     return new Promise(resolve => {
-      sharp(pFileName)
+      sharp(configLocalFiles.write_aws_s3_path+pFileName)
       .resize(320, 240)
-      .toFile(pFileName.split('.')[0]+'_thumbnail.png', (err, info) => 
+      .toFile(configLocalFiles.write_aws_s3_path+pFileName.split('.')[0]+'_thumbnail.png', (err, info) => 
         { 
           resolve(info)
         }

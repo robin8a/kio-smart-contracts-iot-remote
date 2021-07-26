@@ -17,5 +17,8 @@
         "debug": true,
         "topic_subscribe": "topic_1",
         "topic_publish": "topic_2"
+    },
+    "local_files": {
+        "write_aws_s3_path": "./images/"
     }
 }
