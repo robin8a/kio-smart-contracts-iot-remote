@@ -1,5 +1,4 @@
 // ToDo test trasactions without funds
-// ToDo create a folder for IPFS images
 // ToDo try catch on TXs
 
 var awsIot = require('aws-iot-device-sdk');
