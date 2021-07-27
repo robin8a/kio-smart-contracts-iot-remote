@@ -205,6 +205,7 @@ class CardanocliJs {
         ? response.then((res) => res.json())
         : response.json();
     }
+    debugger
     const utxosRaw = execSync(`${this.cliPath} query utxo \
             --${this.network} \
             --address ${address} \
