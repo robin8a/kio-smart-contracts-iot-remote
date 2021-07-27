@@ -135,16 +135,16 @@ device
     
     if (obj.Transfer_Funds_Between_Wallets_From_UI !== undefined) { 
       console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI');
-
+      debugger
       var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
       console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
-
+      debugger
       var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_destination;
       console.log('## device.on message Wallet Address Destination: ', walletAddressDestination);
-
+      debugger
       var transactionAmount = parseFloat(obj.Transfer_Funds_Between_Wallets_From_UI[0].transaction_amount);
       console.log('## device.on message Transaction Amount: ', transactionAmount);
-
+      debugger
       // funded wallet
       const sender = cardanocliJs.wallet(walletNameOrigin);
       console.log(
@@ -152,10 +152,10 @@ device
           cardanocliJs.toAda(sender.balance().value.lovelace) +
           " ADA"
       );
-
+      debugger
       //receiver address
       const receiver = walletAddressDestination;
-
+      debugger
       // create raw transaction
       let txInfo = {
         txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
@@ -172,7 +172,7 @@ device
       };
       debugger
       let raw = cardanocliJs.transactionBuildRaw(txInfo);
-
+      debugger
       //calculate fee
       let fee = cardanocliJs.transactionCalculateMinFee({
         ...txInfo,
