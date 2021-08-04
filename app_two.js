@@ -258,7 +258,8 @@ device
    if (obj.Create_Proposal_From_UI !== undefined) { 
       console.log('## device.on message Create_Proposal_From_UI');
       debugger
-      var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
+      //var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
+      var walletNameOrigin = "acdc"
       console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
       debugger
       //var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_destination;
