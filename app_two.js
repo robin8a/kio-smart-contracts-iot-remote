@@ -257,19 +257,16 @@ device
    
    if (obj.Create_Proposal_From_UI !== undefined) { 
       console.log('## device.on message Create_Proposal_From_UI');
-      debugger
       //var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
-      var walletNameOrigin = "acdc"
+      var walletNameOrigin = "W0107"
       console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
-      debugger
       //var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_destination;
       //console.log('## device.on message Wallet Address Destination: ', walletAddressDestination);
       //debugger
       
       // var transactionAmount = parseFloat(obj.Transfer_Funds_Between_Wallets_From_UI[0].transaction_amount);
-      var transactionAmount = 0 // No need to transfer funds to submit proposal
-      console.log('## device.on message Transaction Amount: ', transactionAmount);
-      debugger
+      //var transactionAmount = 0 // No need to transfer funds to submit proposal
+      //console.log('## device.on message Transaction Amount: ', transactionAmount);
       // funded wallet
       const sender = cardanocliJs.wallet(walletNameOrigin);
       console.log(
@@ -277,10 +274,6 @@ device
           cardanocliJs.toAda(sender.balance().value.lovelace) +
           " ADA"
       );
-      debugger
-      //receiver address
-      const receiver = sender;
-      debugger
       // create raw transaction
       let txInfo = {
         txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
@@ -288,12 +281,16 @@ device
           {
             address: sender.paymentAddr,
             value: {
-              lovelace: sender.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
+              lovelace: 0,
             },
-          }, //value going back to sender
-          { address: receiver, value: { lovelace: cardanocliJs.toLovelace(transactionAmount) } }, //value going to receiver
+          },
         ],
-         metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
+         metadata: {
+          "1337": {
+              "name": "hello world",
+              "completed": 0
+          }
+        },
       };
       debugger
       let raw = cardanocliJs.transactionBuildRaw(txInfo);
@@ -306,7 +303,7 @@ device
       });
       debugger
       //pay the fee by subtracting it from the sender utxo
-      txInfo.txOut[0].value.lovelace -= fee;
+      txInfo.txOut[0].value.lovelace = sender.balance().value.lovelace - fee;
       debugger
 
       //create final transaction
