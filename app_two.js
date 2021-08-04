@@ -254,6 +254,79 @@ device
         device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
       }
     }
+   
+   if (obj.Create_Proposal_From_UI !== undefined) { 
+      console.log('## device.on message Create_Proposal_From_UI');
+      debugger
+      var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
+      console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
+      debugger
+      //var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_destination;
+      //console.log('## device.on message Wallet Address Destination: ', walletAddressDestination);
+      //debugger
+      
+      // var transactionAmount = parseFloat(obj.Transfer_Funds_Between_Wallets_From_UI[0].transaction_amount);
+      var transactionAmount = 0 // No need to transfer funds to submit proposal
+      console.log('## device.on message Transaction Amount: ', transactionAmount);
+      debugger
+      // funded wallet
+      const sender = cardanocliJs.wallet(walletNameOrigin);
+      console.log(
+        "Balance of Sender wallet: " +
+          cardanocliJs.toAda(sender.balance().value.lovelace) +
+          " ADA"
+      );
+      debugger
+      //receiver address
+      const receiver = sender;
+      debugger
+      // create raw transaction
+      let txInfo = {
+        txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
+        txOut: [
+          {
+            address: sender.paymentAddr,
+            value: {
+              lovelace: sender.balance().value.lovelace - cardanocliJs.toLovelace(transactionAmount),
+            },
+          }, //value going back to sender
+          { address: receiver, value: { lovelace: cardanocliJs.toLovelace(transactionAmount) } }, //value going to receiver
+        ],
+         metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
+      };
+      debugger
+      let raw = cardanocliJs.transactionBuildRaw(txInfo);
+      debugger
+      //calculate fee
+      let fee = cardanocliJs.transactionCalculateMinFee({
+        ...txInfo,
+        txBody: raw,
+        witnessCount: 1,
+      });
+      debugger
+      //pay the fee by subtracting it from the sender utxo
+      txInfo.txOut[0].value.lovelace -= fee;
+      debugger
+
+      //create final transaction
+      let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
+      debugger
+
+      //sign the transaction
+      let txSigned = cardanocliJs.transactionSign({
+        txBody: tx,
+        signingKeys: [sender.payment.skey],
+      });
+      debugger
+
+      //broadcast transaction
+      let txHash = cardanocliJs.transactionSubmit(txSigned);
+      debugger
+      console.log("TxHash: " + txHash);
+
+      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify({txHash: txHash}));
+
+    }
     
   });
 
