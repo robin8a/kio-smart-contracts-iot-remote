@@ -14,6 +14,9 @@ const fs = require('fs');
 // Thumbnail
 const sharp = require('sharp');
 
+//UUID
+const { v4: uuidv4 } = require("uuid");
+
 // Global variables from credential.json and config.json
 const credentials = require('./config/credentials.json')
 const credentialsAWS = credentials['aws_credentials']
@@ -70,6 +73,12 @@ var device = awsIot.device({
   });
   return cardanocliJs.wallet(account);
 };
+
+function generate_uuid() {
+  const uniqueId = uuidv4();
+  console.log(uniqueId);
+  return uniqueId
+}
 
 //
 // Device is an instance returned by mqtt.Client(), see mqtt.js for full
@@ -256,10 +265,15 @@ device
     }
    
    if (obj.Create_Proposal_From_UI !== undefined) { 
-      console.log('## device.on message Create_Proposal_From_UI');
+     
+      // Create first fields in metadata
+      var metadata = { "276541159": 
+        "ObjectType": "VoteProposal",
+        "ProposalID": this.generate_uuid(),
+        obj.Create_Proposal_From_UI[0]
+      };
+      
       var walletNameOrigin = "W0107";
-      console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
-      var metadata = { "1337": obj.Create_Proposal_From_UI[0]};
       const sender = cardanocliJs.wallet(walletNameOrigin);
       console.log(
         "Balance of Sender wallet: " +
@@ -279,7 +293,8 @@ device
         ],
         metadata: metadata,
       };
-      //debugger
+      
+      //Build transaction to calculate fees
       let raw = cardanocliJs.transactionBuildRaw(txInfo);
       //calculate fee
       let fee = cardanocliJs.transactionCalculateMinFee({
