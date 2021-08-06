@@ -205,7 +205,14 @@ class CardanocliJs {
         ? response.then((res) => res.json())
         : response.json();
     }
-    debugger
+    
+    console.log("query utxo address: "+`${this.cliPath} query utxo \
+    --${this.network} \
+    --address ${address} \
+    --cardano-mode \
+    ${this.era}
+    `)
+
     const utxosRaw = execSync(`${this.cliPath} query utxo \
             --${this.network} \
             --address ${address} \
@@ -863,6 +870,28 @@ class CardanocliJs {
     const auxScript = options.auxScript
       ? auxScriptToString(this.dir, options.auxScript)
       : "";
+
+      console.log("transaction build: "+`${this.cliPath} transaction build-raw \
+                ${txInString} \
+                ${txOutString} \
+                ${certs} \
+                ${withdrawals} \
+                ${mintString} \
+                ${auxScript} \
+                ${metadata} \
+                --invalid-hereafter ${
+                  options.invalidAfter
+                    ? options.invalidAfter
+                    : this.queryTip().slot + 10000
+                } \
+                --invalid-before ${
+                  options.invalidBefore ? options.invalidBefore : 0
+                } \
+                --fee ${options.fee ? options.fee : 0} \
+                --out-file ${this.dir}/tmp/tx_${UID}.raw \
+                ${this.era}`)
+
+
     execSync(`${this.cliPath} transaction build-raw \
                 ${txInString} \
                 ${txOutString} \
@@ -907,6 +936,15 @@ class CardanocliJs {
       return response.then((res) => res.text());
     }
     this.queryProtocolParameters();
+
+    console.log("calculate min fees: "+`${this.cliPath} transaction calculate-min-fee \
+    --tx-body-file ${options.txBody} \
+    --tx-in-count ${options.txIn.length} \
+    --tx-out-count ${options.txOut.length} \
+    --${this.network} \
+    --witness-count ${options.witnessCount} \
+    --protocol-params-file ${this.protocolParametersPath}`)
+
     return parseInt(
       execSync(`${this.cliPath} transaction calculate-min-fee \
                 --tx-body-file ${options.txBody} \
@@ -969,6 +1007,13 @@ class CardanocliJs {
     }
     const UID = Math.random().toString(36).substr(2, 9);
     const signingKeys = signingKeysToString(options.signingKeys);
+
+    console.log("sign the transaction: "+`${this.cliPath} transaction sign \
+    --tx-body-file ${options.txBody} \
+    --${this.network} \
+    ${signingKeys} \
+    --out-file ${this.dir}/tmp/tx_${UID}.signed`)
+
     execSync(`${this.cliPath} transaction sign \
         --tx-body-file ${options.txBody} \
         --${this.network} \
@@ -1081,6 +1126,9 @@ class CardanocliJs {
     } else {
       parsedTx = tx;
     }
+
+    console.log("transaction submit: "+`${this.cliPath} transaction submit --${this.network} --tx-file ${parsedTx}`)
+
     execSync(
       `${this.cliPath} transaction submit --${this.network} --tx-file ${parsedTx}`
     );

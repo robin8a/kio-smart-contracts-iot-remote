@@ -257,17 +257,9 @@ device
    
    if (obj.Create_Proposal_From_UI !== undefined) { 
       console.log('## device.on message Create_Proposal_From_UI');
-      //var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
-      var walletNameOrigin = "W0107"
+      var walletNameOrigin = "W0107";
       console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
-      //var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_destination;
-      //console.log('## device.on message Wallet Address Destination: ', walletAddressDestination);
-      //debugger
-      
-      // var transactionAmount = parseFloat(obj.Transfer_Funds_Between_Wallets_From_UI[0].transaction_amount);
-      //var transactionAmount = 0 // No need to transfer funds to submit proposal
-      //console.log('## device.on message Transaction Amount: ', transactionAmount);
-      // funded wallet
+      var metadata = { "1337": obj.Create_Proposal_From_UI[0]};
       const sender = cardanocliJs.wallet(walletNameOrigin);
       console.log(
         "Balance of Sender wallet: " +
@@ -285,41 +277,30 @@ device
             },
           },
         ],
-         metadata: {
-          "1337": {
-              "name": "hello world",
-              "completed": 0
-          }
-        },
+        metadata: metadata,
       };
-      debugger
+      //debugger
       let raw = cardanocliJs.transactionBuildRaw(txInfo);
-      debugger
       //calculate fee
       let fee = cardanocliJs.transactionCalculateMinFee({
         ...txInfo,
         txBody: raw,
         witnessCount: 1,
       });
-      debugger
       //pay the fee by subtracting it from the sender utxo
       txInfo.txOut[0].value.lovelace = sender.balance().value.lovelace - fee;
-      debugger
 
       //create final transaction
       let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
-      debugger
 
       //sign the transaction
       let txSigned = cardanocliJs.transactionSign({
         txBody: tx,
         signingKeys: [sender.payment.skey],
       });
-      debugger
 
       //broadcast transaction
       let txHash = cardanocliJs.transactionSubmit(txSigned);
-      debugger
       console.log("TxHash: " + txHash);
 
       device.publish(configAWSIoTDevice.topic_publish, JSON.stringify({txHash: txHash}));
