@@ -16,6 +16,8 @@ const sharp = require('sharp');
 
 //UUID
 const { v4: uuidv4 } = require("uuid");
+// Crypto library
+const crypto = require('crypto');
 
 // Global variables from credential.json and config.json
 const credentials = require('./config/credentials.json')
@@ -73,12 +75,6 @@ var device = awsIot.device({
   });
   return cardanocliJs.wallet(account);
 };
-
-function generate_uuid() {
-  const uniqueId = uuidv4();
-  console.log(uniqueId);
-  return uniqueId
-}
 
 //
 // Device is an instance returned by mqtt.Client(), see mqtt.js for full
@@ -265,12 +261,18 @@ device
     }
    
    if (obj.Create_Proposal_From_UI !== undefined) { 
-     
+     var sub_metadata = obj.Create_Proposal_From_UI[0]
+     var voterRegistrationID = uuidv4();
+     var proposalID = uuidv4();
+     var seed = voterRegistrationID+proposalID
+     const voterHash = crypto.createHash('sha256', seed)
       // Create first fields in metadata
-      var metadata = { "276541159": 
+      var metadata = { "276541159": {
         "ObjectType": "VoteProposal",
-        "ProposalID": this.generate_uuid(),
-        obj.Create_Proposal_From_UI[0]
+        "ProposalID": proposalID,
+        "VoterHash": voterHash,
+        sub_metadata,
+      }
       };
       
       var walletNameOrigin = "W0107";
