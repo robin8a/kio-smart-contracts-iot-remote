@@ -265,13 +265,24 @@ device
      var voterRegistrationID = uuidv4();
      var proposalID = uuidv4();
      var seed = voterRegistrationID+proposalID
-     const voterHash = crypto.createHash('sha256', seed)
+     const voterHash = crypto.createHash('sha256')
+      .update(seed,'utf8')
+      .digest('hex');
+      
       // Create first fields in metadata
       var metadata = { "276541159": {
         "ObjectType": "VoteProposal",
         "ProposalID": proposalID,
         "VoterHash": voterHash,
         sub_metadata,
+        //The next fields are fixed for the time being
+        "VoteType": "choice",
+        "VoteLimit": 1,
+        "VoteMultiple": 0,
+        "VoteRanked": 0,
+        "VoteOptions": [],
+        "VoteStartPeriod": "",
+        "VoteEndPeriod": 300,
       }
       };
       
