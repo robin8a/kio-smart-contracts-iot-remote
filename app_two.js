@@ -262,7 +262,7 @@ device
    
    if (obj.Create_Proposal_From_UI !== undefined) { 
      debugger
-     var sub_metadata = obj.Create_Proposal_From_UI[0]
+     //var sub_metadata = obj.Create_Proposal_From_UI[0]
      var voterRegistrationID = uuidv4();
      var proposalID = uuidv4();
      var seed = voterRegistrationID+proposalID
@@ -271,11 +271,15 @@ device
       .digest('hex');
       
       // Create first fields in metadata
-      var metadata = { "276541159": {
+      var metadata_proposal = { "276541159": {
         "ObjectType": "VoteProposal",
         "ProposalID": proposalID,
         "VoterHash": voterHash,
-        sub_metadata,
+        "NetworkID": obj.Create_Proposal_From_UI[0].pNetworkId,
+        "Title": obj.Create_Proposal_From_UI[0].pTitle,
+        "Question": obj.Create_Proposal_From_UI[0].pQuestion,
+        "Description": obj.Create_Proposal_From_UI[0].pDescription,
+        "ProposalURL": obj.Create_Proposal_From_UI[0].pProposalURL,
         //The next fields are fixed for the time being
         "VoteType": "choice",
         "VoteLimit": 1,
@@ -285,6 +289,21 @@ device
         "VoteStartPeriod": "",
         "VoteEndPeriod": 300,
       }
+      };
+      const voter_ids = []
+      for (let i = 0; i < obj.Create_Proposal_From_UI[0].pvoters; i++){
+        voter_ids.push(uuidv4);
+      }
+      console.log(voter_ids)
+      
+      var metadata_voter = { "466390691": {
+        "ObjectType": "VoteRegistration",
+        "NetworkID": obj.Create_Proposal_From_UI[0].pNetworkId,
+        "ProposalID": proposalID,
+        "RegistrationID": voterRegistrationID,
+        
+      }
+        
       };
       
       var walletNameOrigin = "W0107";
@@ -305,7 +324,7 @@ device
             },
           },
         ],
-        metadata: metadata,
+        metadata: metadata_proposal,
       };
       
       //Build transaction to calculate fees
