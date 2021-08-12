@@ -261,6 +261,7 @@ device
     }
    
    if (obj.Create_Proposal_From_UI !== undefined) { 
+     debugger
      var sub_metadata = obj.Create_Proposal_From_UI[0]
      var voterRegistrationID = uuidv4();
      var proposalID = uuidv4();
