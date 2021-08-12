@@ -292,19 +292,23 @@ device
       };
       const voter_ids = []
       for (let i = 0; i < obj.Create_Proposal_From_UI[0].pvoters; i++){
-        voter_ids.push(uuidv4);
-      }
-      console.log(voter_ids)
+        voter_ids.push(uuidv4());
+      };
       
       var metadata_voter = { "466390691": {
         "ObjectType": "VoteRegistration",
         "NetworkID": obj.Create_Proposal_From_UI[0].pNetworkId,
         "ProposalID": proposalID,
         "RegistrationID": voterRegistrationID,
+        "Voters": voter_ids,
         
       }
-        
       };
+      
+      fs.writeFileSync(
+      `${this.dir}/priv/voter_${proposalID}.json`,
+      JSON.stringify(metadata_voter)
+      );
       
       var walletNameOrigin = "W0107";
       const sender = cardanocliJs.wallet(walletNameOrigin);
