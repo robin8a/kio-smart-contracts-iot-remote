@@ -261,11 +261,10 @@ device
     }
    
    if (obj.Create_Proposal_From_UI !== undefined) { 
-     debugger
      //var sub_metadata = obj.Create_Proposal_From_UI[0]
      var voterRegistrationID = uuidv4();
      var proposalID = uuidv4();
-     var seed = voterRegistrationID+proposalID
+     var seed = voterRegistrationID+proposalID;
      const voterHash = crypto.createHash('sha256')
       .update(seed,'utf8')
       .digest('hex');
@@ -290,10 +289,10 @@ device
         "VoteEndPeriod": 300,
       }
       };
-      const voter_ids = []
+      const voter_ids = [];
       for (let i = 0; i < obj.Create_Proposal_From_UI[0].pvoters; i++){
         voter_ids.push(uuidv4());
-      };
+      }
       
       var metadata_voter = { "466390691": {
         "ObjectType": "VoteRegistration",
@@ -305,10 +304,16 @@ device
       }
       };
       
-      fs.writeFileSync(
-      `${this.dir}/priv/voter_${proposalID}.json`,
-      JSON.stringify(metadata_voter)
-      );
+      const proposalIDfile = __dirname + '/proposals/'+ `proposal_${proposalID}.json`;
+      const voterIDfile = __dirname + '/proposals/'+ `voter_${proposalID}.json`;
+      
+      savefiles(proposalIDfile,metadata_proposal);
+      savefiles(voterIDfile,metadata_voter);
+
+      // fs.writeFile(proposalIDfile, JSON.stringify(metadata_voter, null, 2), function (err){
+      //   if (err) throw err;
+      //   console.log('Saved');
+      // });
       
       var walletNameOrigin = "W0107";
       const sender = cardanocliJs.wallet(walletNameOrigin);
@@ -629,4 +634,10 @@ async function testMint() {
   console.log('createdTimeLockedMintPolicyThenCreateMintAssetResult: ', createdTimeLockedMintPolicyThenCreateMintAssetResult)
 }
 
-// testMint()
+async function savefiles (filepath,data) {
+  fs.writeFile(filepath, JSON.stringify(data, null, 2), function (err){
+  if (err) throw err;
+  console.log('Saved');
+    
+  });
+}
