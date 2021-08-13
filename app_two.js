@@ -14,7 +14,7 @@ const fs = require('fs');
 // Thumbnail
 const sharp = require('sharp');
 
-const proposal = require("./proposal.js");
+const ProposalJs = require("./proposal.js");
 //UUID
 const { v4: uuidv4 } = require("uuid");
 // Crypto library
@@ -263,111 +263,12 @@ device
     
     if (obj.Create_Proposal_From_UI !== undefined) {
       var proposal = obj.Create_Proposal_From_UI[0]
-      
-      const metadata_proposal = proposal.createProposal(proposal);
-      console.log(metadata_proposal)
+      metadata = ProposalJs.data.metadata(proposal);
+      walletname = "W0107";
+      submit_proposal = ProposalJs.data.submitProposal(walletname,metadata.proposal);
     }
-   
-  // if (obj.Create_Proposal_From_UI !== undefined) { 
-  //   //var sub_metadata = obj.Create_Proposal_From_UI[0]
-  //   var voterRegistrationID = uuidv4();
-  //   var proposalID = uuidv4();
-  //   var seed = voterRegistrationID+proposalID;
-  //   const voterHash = crypto.createHash('sha256')
-  //     .update(seed,'utf8')
-  //     .digest('hex');
-      
-  //     // Create first fields in metadata
-  //     var metadata_proposal = { "276541159": {
-  //       "ObjectType": "VoteProposal",
-  //       "ProposalID": proposalID,
-  //       "VoterHash": voterHash,
-  //       "NetworkID": obj.Create_Proposal_From_UI[0].pNetworkId,
-  //       "Title": obj.Create_Proposal_From_UI[0].pTitle,
-  //       "Question": obj.Create_Proposal_From_UI[0].pQuestion,
-  //       "Description": obj.Create_Proposal_From_UI[0].pDescription,
-  //       "ProposalURL": obj.Create_Proposal_From_UI[0].pProposalURL,
-  //       //The next fields are fixed for the time being
-  //       "VoteType": "choice",
-  //       "VoteLimit": 1,
-  //       "VoteMultiple": 0,
-  //       "VoteRanked": 0,
-  //       "VoteOptions": [],
-  //       "VoteStartPeriod": "",
-  //       "VoteEndPeriod": 300,
-  //     }
-  //     };
-  //     const voter_ids = [];
-  //     for (let i = 0; i < obj.Create_Proposal_From_UI[0].pvoters; i++){
-  //       voter_ids.push(uuidv4());
-  //     }
-      
-  //     var metadata_voter = { "466390691": {
-  //       "ObjectType": "VoteRegistration",
-  //       "NetworkID": obj.Create_Proposal_From_UI[0].pNetworkId,
-  //       "ProposalID": proposalID,
-  //       "RegistrationID": voterRegistrationID,
-  //       "Voters": voter_ids,
-        
-  //     }
-  //     };
-      
-  //     const proposalIDfile = __dirname + '/proposals/'+ `proposal_${proposalID}.json`;
-  //     const voterIDfile = __dirname + '/proposals/'+ `voter_${proposalID}.json`;
-      
-  //     savefiles(proposalIDfile,metadata_proposal);
-  //     savefiles(voterIDfile,metadata_voter);
-      
-  //     var walletNameOrigin = "W0107";
-  //     const sender = cardanocliJs.wallet(walletNameOrigin);
-  //     console.log(
-  //       "Balance of Sender wallet: " +
-  //         cardanocliJs.toAda(sender.balance().value.lovelace) +
-  //         " ADA"
-  //     );
-  //     // create raw transaction
-  //     let txInfo = {
-  //       txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
-  //       txOut: [
-  //         {
-  //           address: sender.paymentAddr,
-  //           value: {
-  //             lovelace: 0,
-  //           },
-  //         },
-  //       ],
-  //       metadata: metadata_proposal,
-  //     };
-      
-  //     //Build transaction to calculate fees
-  //     let raw = cardanocliJs.transactionBuildRaw(txInfo);
-  //     //calculate fee
-  //     let fee = cardanocliJs.transactionCalculateMinFee({
-  //       ...txInfo,
-  //       txBody: raw,
-  //       witnessCount: 1,
-  //     });
-  //     //pay the fee by subtracting it from the sender utxo
-  //     txInfo.txOut[0].value.lovelace = sender.balance().value.lovelace - fee;
-
-  //     //create final transaction
-  //     let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
-
-  //     //sign the transaction
-  //     let txSigned = cardanocliJs.transactionSign({
-  //       txBody: tx,
-  //       signingKeys: [sender.payment.skey],
-  //     });
-
-  //     //broadcast transaction
-  //     let txHash = cardanocliJs.transactionSubmit(txSigned);
-  //     console.log("TxHash: " + txHash);
-
-  //     device.publish(configAWSIoTDevice.topic_publish, JSON.stringify({txHash: txHash}));
-
-  //   }
     
-  // });
+  });
 
   pinata.testAuthentication().then((result) => {
     //handle successful authentication here
@@ -643,4 +544,4 @@ async function savefiles (filepath,data) {
   console.log('Saved');
     
   });
-}
+};

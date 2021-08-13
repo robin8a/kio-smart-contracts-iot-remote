@@ -30,73 +30,70 @@ const cardanocliJs = new CardanocliJs({
   shelleyGenesisPath: shelleyPath,
   socketPath: configCardanoCli.socketPath,
 });
+var proposal_methods = {};
 
-class Proposal {
-    
-    // 1. Create metadata files with proposal details
-    createProposal(proposal) {
+// 1. Create metadata files with proposal details
+proposal_methods.metadata = function createProposal(proposal) {
+       var voterRegistrationID = uuidv4();
+       var proposalID = uuidv4();
+       var seed = voterRegistrationID+proposalID;
+       const voterHash = crypto.createHash('sha256')
+        .update(seed,'utf8')
+        .digest('hex');
         
-         var voterRegistrationID = uuidv4();
-         var proposalID = uuidv4();
-         var seed = voterRegistrationID+proposalID;
-         const voterHash = crypto.createHash('sha256')
-          .update(seed,'utf8')
-          .digest('hex');
+        // Create first fields in metadata
+        var proposal = { "276541159": {
+          "ObjectType": "VoteProposal",
+          "ProposalID": proposalID,
+          "VoterHash": voterHash,
+          "NetworkID": proposal.pNetworkId,
+          "Title": proposal.pTitle,
+          "Question": proposal.pQuestion,
+          "Description": proposal.pDescription,
+          "ProposalURL": proposal.pProposalURL,
+          //The next fields are fixed for the time being
+          "VoteType": "choice",
+          "VoteLimit": 1,
+          "VoteMultiple": 0,
+          "VoteRanked": 0,
+          "VoteOptions": [],
+          "VoteStartPeriod": "",
+          "VoteEndPeriod": 300,
+        }
+        };
+        const voter_ids = [];
+        for (let i = 0; i < proposal.pvoters; i++){
+          voter_ids.push(uuidv4());
+        }
+        
+        var voter = { "466390691": {
+          "ObjectType": "VoteRegistration",
+          "NetworkID": proposal.pNetworkId,
+          "ProposalID": proposalID,
+          "RegistrationID": voterRegistrationID,
+          "Voters": voter_ids,
           
-          // Create first fields in metadata
-          var metadata_proposal = { "276541159": {
-            "ObjectType": "VoteProposal",
-            "ProposalID": proposalID,
-            "VoterHash": voterHash,
-            "NetworkID": proposal.pNetworkId,
-            "Title": proposal.pTitle,
-            "Question": proposal.pQuestion,
-            "Description": proposal.pDescription,
-            "ProposalURL": proposal.pProposalURL,
-            //The next fields are fixed for the time being
-            "VoteType": "choice",
-            "VoteLimit": 1,
-            "VoteMultiple": 0,
-            "VoteRanked": 0,
-            "VoteOptions": [],
-            "VoteStartPeriod": "",
-            "VoteEndPeriod": 300,
-          }
-          };
-          const voter_ids = [];
-          for (let i = 0; i < proposal.pvoters; i++){
-            voter_ids.push(uuidv4());
-          }
-          
-          var metadata_voter = { "466390691": {
-            "ObjectType": "VoteRegistration",
-            "NetworkID": proposal.pNetworkId,
-            "ProposalID": proposalID,
-            "RegistrationID": voterRegistrationID,
-            "Voters": voter_ids,
-            
-          }
-          };
-          
-          const proposalIDfile = __dirname + '/proposals/'+ `proposal_${proposalID}.json`;
-          const voterIDfile = __dirname + '/proposals/'+ `voter_${proposalID}.json`;
-          
-          savefiles(proposalIDfile,metadata_proposal);
-          savefiles(voterIDfile,metadata_voter);
-          this.metadata_proposal = metadata_proposal;
-          this.metadata_proposal_path = proposalIDfile;
-          this.metadata_voter = metadata_voter;
-          this.metadata_voter = voterIDfile;
-          return {
-              metadata_proposal, 
-              metadata_voter,
-          };
-          
+        }
+        };
+        
+        const proposalIDfile = __dirname + '/proposals/'+ `proposal_${proposalID}.json`;
+        const voterIDfile = __dirname + '/proposals/'+ `voter_${proposalID}.json`;
+        
+        savefiles(proposalIDfile,proposal);
+        savefiles(voterIDfile,voter);
+        this.proposal = proposal;
+        this.proposal_path = proposalIDfile;
+        this.voter = voter;
+        this.voter = voterIDfile;
+        return {
+            proposal, 
+            voter,
+        };
+        
 
-    }
-    
+  }; 
     // 2. Submit proposal on-chain 
-    submitProposal(walletName,metadata) {
+    proposal_methods.submitProposal = function submitProposal(walletName,metadata) {
           const sender = cardanocliJs.wallet(walletName);
           console.log(
             "Balance of Sender wallet: " +
@@ -142,10 +139,9 @@ class Proposal {
           console.log("TxHash: " + txHash);
     
           //device.publish(configAWSIoTDevice.topic_publish, JSON.stringify({txHash: txHash}));
-    }
-}
+    };
 
-module.exports = Proposal;
+exports.data = proposal_methods;
 
 async function savefiles (filepath,data) {
   fs.writeFile(filepath, JSON.stringify(data, null, 2), function (err){
