@@ -5,3 +5,5 @@ certs/kio-smart-contracts-iot-device/root-CA.crt
 config/credentials.json
 aws_credentials.json
 node_modules/
+workspace.code-workspace
+package-lock.json
