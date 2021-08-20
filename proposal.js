@@ -42,7 +42,7 @@ proposal_methods.metadata = function createProposal(proposal) {
         .digest('hex');
         
         // Create first fields in metadata
-        var proposal = { "276541159": {
+        var proposal_meta = { "276541159": {
           "ObjectType": "VoteProposal",
           "ProposalID": proposalID,
           "VoterHash": voterHash,
@@ -66,7 +66,7 @@ proposal_methods.metadata = function createProposal(proposal) {
           voter_ids.push(uuidv4());
         }
         
-        var voter = { "466390691": {
+        var voter_meta = { "466390691": {
           "ObjectType": "VoteRegistration",
           "NetworkID": proposal.pNetworkId,
           "ProposalID": proposalID,
@@ -79,15 +79,15 @@ proposal_methods.metadata = function createProposal(proposal) {
         const proposalIDfile = __dirname + '/proposals/'+ `proposal_${proposalID}.json`;
         const voterIDfile = __dirname + '/proposals/'+ `voter_${proposalID}.json`;
         
-        savefiles(proposalIDfile,proposal);
-        savefiles(voterIDfile,voter);
-        this.proposal = proposal;
+        savefiles(proposalIDfile,proposal_meta);
+        savefiles(voterIDfile,voter_meta);
+        this.proposal = proposal_meta;
         this.proposal_path = proposalIDfile;
-        this.voter = voter;
+        this.voter = voter_meta;
         this.voter = voterIDfile;
         return {
-            proposal, 
-            voter,
+            proposal_meta, 
+            voter_meta,
         };
         
 
