@@ -89,6 +89,26 @@ device
   });
 
 device
+  .on('close', function() {
+     console.log('close');
+  });
+
+device
+  .on('reconnect', function() {
+     console.log('reconnect');
+  });
+
+device
+  .on('offline', function() {
+     console.log('offline');
+  });
+
+device
+  .on('error', function(error) {
+     console.log('error', error);
+  });
+  
+device
   .on('message', async function(topic, payload) {
     console.log('##########################################')
     console.log('message topic payload: ', topic, payload);
