@@ -64,6 +64,7 @@ proposal_methods.metadata = function createProposal(proposal) {
         const voter_ids = [];
         for (let i = 0; i < proposal.pvoters; i++){
           voter_ids.push(uuidv4());
+          
         }
         
         var voter_meta = { "466390691": {
