@@ -80,7 +80,7 @@ function processTest(args) {
     });
     return cardanocliJs.wallet(account);
   };
-
+  // Sub to topic from UI
   device.subscribe(configAWSIoTDevice.topic_ui);
   
   //
