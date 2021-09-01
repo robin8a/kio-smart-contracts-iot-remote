@@ -1,4 +1,4 @@
-const deviceModule = require('aws-iot-device-sdk/device').device;
+const deviceModule = require('aws-iot-device-sdk').device;
 const cmdLineProcess = require('aws-iot-device-sdk/examples/lib/cmdline');
 
 //begin module
