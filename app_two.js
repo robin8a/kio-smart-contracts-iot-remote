@@ -68,48 +68,54 @@ function processTest(args) {
         port: configAWSIoTDevice.port,
         debug: configAWSIoTDevice.debug
   });
-  debugger
+  
 
-  // const createWallet = (account) => {
-  //   const payment = cardanocliJs.addressKeyGen(account);
-  //   const stake = cardanocliJs.stakeAddressKeyGen(account);
-  //   cardanocliJs.stakeAddressBuild(account);
-  //   cardanocliJs.addressBuild(account, {
-  //     paymentVkey: payment.vkey,
-  //     stakeVkey: stake.vkey,
-  //   });
-  //   return cardanocliJs.wallet(account);
-  // };
+  const createWallet = (account) => {
+    const payment = cardanocliJs.addressKeyGen(account);
+    const stake = cardanocliJs.stakeAddressKeyGen(account);
+    cardanocliJs.stakeAddressBuild(account);
+    cardanocliJs.addressBuild(account, {
+      paymentVkey: payment.vkey,
+      stakeVkey: stake.vkey,
+    });
+    return cardanocliJs.wallet(account);
+  };
 
-  // //
-  // // Device is an instance returned by mqtt.Client(), see mqtt.js for full
-  // // documentation.
-  // //
-  // device
-  //   .on('connect', function() {
-  //     console.log('connect');
-  //     device.subscribe(configAWSIoTDevice.topic_ui);
-  //   });
+  
+  //
+  // Device is an instance returned by mqtt.Client(), see mqtt.js for full
+  // documentation.
+  //
+  device
+    .on('connect', function() {
+      console.log('connect');
+      device.subscribe(configAWSIoTDevice.topic_ui);
+    });
 
-  // device
-  //   .on('close', function() {
-  //     console.log('close');
-  //   });
+  device
+    .on('close', function() {
+      console.log('close');
+    });
 
-  // device
-  //   .on('reconnect', function() {
-  //     console.log('reconnect');
-  //   });
+  device
+    .on('reconnect', function() {
+      console.log('reconnect');
+    });
 
-  // device
-  //   .on('offline', function() {
-  //     console.log('offline');
-  //   });
+  device
+    .on('offline', function() {
+      console.log('offline');
+    });
 
-  // device
-  //   .on('error', function(error) {
-  //     console.log('error', error);
-  //   });
+  device
+    .on('error', function(error) {
+      console.log('error', error);
+    });
+  
+  device
+    .on('message', function(topic, payload) {
+       console.log('message', topic, payload.toString());
+    });
     
   // device
   //   .on('message', async function(topic, payload) {
