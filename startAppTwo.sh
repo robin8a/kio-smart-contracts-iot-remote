@@ -9,7 +9,7 @@ printf "\nRunning pub/sub sample application...\n"
 
 
 ## Run changed device-example.js from node_modules/aws-iot-device-sdk/examples/device-example.js 
-node app-two.js \
+node app_two.js \
 --host-name=az6wto8a6h0jn-ats.iot.us-east-1.amazonaws.com \
 --private-key=certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.private.key \
 --client-certificate=certs/kio-smart-contracts-iot-device/kio-smart-contracts-iot-device.cert.pem \
