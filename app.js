@@ -72,7 +72,7 @@ function processTest(args) {
       debug: args.Debug
    });
 
-
+   // Sub to topic from UI
    device.subscribe(configAWSIoTDevice.topic_ui);
    
   //  var timeout;
