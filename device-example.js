@@ -20,7 +20,7 @@
 //app deps
 var awsIot = require('aws-iot-device-sdk');
 // const deviceModule = require('..').device;
-const cmdLineProcess = require('./lib/cmdline');
+// const cmdLineProcess = require('./lib/cmdline');
 const config = require('./config/config.json');
 const configAWSIoTDevice = config['aws_iot_device']
 
@@ -106,9 +106,9 @@ function processTest(args) {
 
 }
 
-module.exports = cmdLineProcess;
+// module.exports = cmdLineProcess;
 
-if (require.main === module) {
-   cmdLineProcess('connect to the AWS IoT service and publish/subscribe to topics using MQTT, test modes 1-2',
-      process.argv.slice(2), processTest);
-}
+// if (require.main === module) {
+//    cmdLineProcess('connect to the AWS IoT service and publish/subscribe to topics using MQTT, test modes 1-2',
+//       process.argv.slice(2), processTest);
+// }
