@@ -15,8 +15,8 @@
         "region": "us-east-1",
         "port": 8883,
         "debug": true,
-        "topic_subscribe": "topic_1",
-        "topic_publish": "topic_2"
+        "topic_ui": "kio_sc_topic_ui",
+        "topic_server": "kio_sc_topic_server"
     },
     "local_files": {
         "write_aws_s3_path": "./images/"

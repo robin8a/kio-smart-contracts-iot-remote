@@ -84,8 +84,7 @@ var device = awsIot.device({
 device
   .on('connect', function() {
     console.log('connect');
-    device.subscribe(configAWSIoTDevice.topic_subscribe);
-    device.publish(configAWSIoTDevice.topic_publish, JSON.stringify({ test_data: 1}));
+    device.subscribe(configAWSIoTDevice.topic_ui);
   });
 
 device
@@ -127,7 +126,7 @@ device
         console.log('## device.on message Command_From_UI command_from_ui: ', command_from_ui);
         command_from_ui_result = shell.exec(command_from_ui, {silent:true}).stdout;
         console.log('## device.on message Command_From_UI command_from_ui_result: ', command_from_ui_result);
-        device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_ui_result));
+        device.publish(configAWSIoTDevice.topic_server, JSON.stringify(command_from_ui_result));
     }
 
     if (obj.Command_From_UI_Query_Tip !== undefined) {
@@ -137,7 +136,7 @@ device
       console.log('## device.on message Command_From_UI_Query_Tip command_from_ui: ', command_from_ui_query_tip);
       command_from_ui_query_tip_result = cardanocliJs.queryTip();
       console.log('## device.on message Command_From_UI_Query_Tip command_from_ui_result: ', command_from_ui_query_tip_result);
-      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_ui_query_tip_result));
+      device.publish(configAWSIoTDevice.topic_server, JSON.stringify(command_from_ui_query_tip_result));
     }
 
     if (obj.Create_Wallet_From_UI !== undefined) { 
@@ -146,7 +145,7 @@ device
       console.log('## device.on message Wallet Name: ', walletName);
       command_from_create_wallet_result = createWallet(walletName);
       console.log('## device.on message Create_Wallet_From_UI command_from_ui_result: ', command_from_create_wallet_result);
-      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_create_wallet_result));
+      device.publish(configAWSIoTDevice.topic_server, JSON.stringify(command_from_create_wallet_result));
     }
 
     if (obj.Get_Wallet_Balance_By_Name_From_UI !== undefined) { 
@@ -156,7 +155,7 @@ device
       // command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance().value.lovelace;
       command_from_get_wallet_balance_by_name_result = cardanocliJs.wallet(walletName).balance();
       console.log('## device.on message Get_Wallet_Balance_By_Name_From_UI command_from_ui_result: ', command_from_get_wallet_balance_by_name_result);
-      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_get_wallet_balance_by_name_result));
+      device.publish(configAWSIoTDevice.topic_server, JSON.stringify(command_from_get_wallet_balance_by_name_result));
     }
     
     if (obj.Transfer_Funds_Between_Wallets_From_UI !== undefined) { 
@@ -226,7 +225,7 @@ device
       debugger
       console.log("TxHash: " + txHash);
 
-      device.publish(configAWSIoTDevice.topic_publish, JSON.stringify({txHash: txHash}));
+      device.publish(configAWSIoTDevice.topic_server, JSON.stringify({txHash: txHash}));
 
     }
 
@@ -237,7 +236,7 @@ device
       command_from_upload_file_to_IPFS_result = await downloadFileFromAWSS3UploadIPFS(fileName);
       if (command_from_upload_file_to_IPFS_result !== undefined) {
         console.log('## device.on message Upload_File_To_IPFS_From_UI command_from_upload_file_to_IPFS_result: ', command_from_upload_file_to_IPFS_result);
-        device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(command_from_upload_file_to_IPFS_result));
+        device.publish(configAWSIoTDevice.topic_server, JSON.stringify(command_from_upload_file_to_IPFS_result));
       }
     }
 
@@ -277,7 +276,7 @@ device
       debugger
       if (createdTimeLockedMintPolicyThenCreateMintAssetResult !== undefined) {
         console.log('## device.on message Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI createdTimeLockedMintPolicyThenCreateMintAssetResult: ', JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
-        device.publish(configAWSIoTDevice.topic_publish, JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
+        device.publish(configAWSIoTDevice.topic_server, JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
       }
     }
     
