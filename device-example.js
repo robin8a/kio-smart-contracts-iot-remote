@@ -20,6 +20,8 @@
 //app deps
 const deviceModule = require('..').device;
 const cmdLineProcess = require('./lib/cmdline');
+const config = require('./config/config.json');
+const configAWSIoTDevice = config['aws_iot_device']
 
 //begin module
 
@@ -49,9 +51,9 @@ function processTest(args) {
    const minimumDelay = 250;
 
    if (args.testMode === 1) {
-      device.subscribe('topic_1');
+      device.subscribe(configAWSIoTDevice.topic_ui);
    } else {
-      device.subscribe('topic_2');
+      device.subscribe(configAWSIoTDevice.topic_server);
    }
    if ((Math.max(args.delay, minimumDelay)) !== args.delay) {
       console.log('substituting ' + minimumDelay + 'ms delay for ' + args.delay + 'ms...');
@@ -60,11 +62,11 @@ function processTest(args) {
       count++;
 
       if (args.testMode === 1) {
-         device.publish('topic_2', JSON.stringify({
+         device.publish(configAWSIoTDevice.topic_server, JSON.stringify({
             mode1Process: count
          }));
       } else {
-         device.publish('topic_1', JSON.stringify({
+         device.publish(configAWSIoTDevice.topic_ui, JSON.stringify({
             mode2Process: count
          }));
       }
@@ -73,7 +75,7 @@ function processTest(args) {
    //
    // Do a simple publish/subscribe demo based on the test-mode passed
    // in the command line arguments.  If test-mode is 1, subscribe to
-   // 'topic_1' and publish to 'topic_2'; otherwise vice versa.  Publish
+   // configAWSIoTDevice.topic_ui and publish to configAWSIoTDevice.topic_server; otherwise vice versa.  Publish
    // a message every four seconds.
    //
    device
