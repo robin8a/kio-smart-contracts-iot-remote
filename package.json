@@ -21,7 +21,7 @@
     "ping": "^0.2.2",
     "ps-tree": "^1.1.0",
     "sharp": "^0.28.3",
-    "shelljs": "^0.7.4",
+    "shelljs": "^0.8.4",
     "socket.io": "^1.5.0",
     "socket.io-client": "^1.5.0",
     "sync-fetch": "^0.3.0",
