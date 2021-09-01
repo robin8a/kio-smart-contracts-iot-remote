@@ -7,7 +7,6 @@ var shell = require('shelljs');
 const pinataSDK = require('@pinata/sdk');
 var AWS = require('aws-sdk');
 const assets = require("./assets.json")
-const cmdLineProcess = require('aws-iot-device-sdk/examples/lib/cmdline');
 
 const CardanocliJs = require("./index.js");
 const os = require("os");
