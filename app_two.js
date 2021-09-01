@@ -57,6 +57,7 @@ const pinata = pinataSDK(credentialsPinata.access_key_id, credentialsPinata.secr
 // connection will be terminated.
 //
 function processTest(args) {
+  debugger
 
   const device = awsIot.device({
       keyPath: configAWSIoTDevice.keyPath,
