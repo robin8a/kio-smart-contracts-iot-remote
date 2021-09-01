@@ -18,7 +18,8 @@
 //npm deps
 
 //app deps
-const deviceModule = require('..').device;
+var awsIot = require('aws-iot-device-sdk');
+// const deviceModule = require('..').device;
 const cmdLineProcess = require('./lib/cmdline');
 const config = require('./config/config.json');
 const configAWSIoTDevice = config['aws_iot_device']
@@ -32,7 +33,7 @@ function processTest(args) {
    // Once connected, it will emit events which our application can
    // handle.
    //
-   const device = deviceModule({
+   const device = awsIot.device({
       keyPath: args.privateKey,
       certPath: args.clientCert,
       caPath: args.caCert,
