@@ -57,18 +57,18 @@ const pinata = pinataSDK(credentialsPinata.access_key_id, credentialsPinata.secr
 // connection will be terminated.
 //
 function processTest(args) {
+  
+  const device = awsIot.device({
+      keyPath: configAWSIoTDevice.keyPath,
+    certPath: configAWSIoTDevice.certPath,
+      caPath: configAWSIoTDevice.caPath,
+    clientId: configAWSIoTDevice.clientId,
+        host: configAWSIoTDevice.host,
+      region: configAWSIoTDevice.region,
+        port: configAWSIoTDevice.port,
+        debug: configAWSIoTDevice.debug
+  });
   debugger
-  console.log('Hello!!!')
-  // const device = awsIot.device({
-  //     keyPath: configAWSIoTDevice.keyPath,
-  //   certPath: configAWSIoTDevice.certPath,
-  //     caPath: configAWSIoTDevice.caPath,
-  //   clientId: configAWSIoTDevice.clientId,
-  //       host: configAWSIoTDevice.host,
-  //     region: configAWSIoTDevice.region,
-  //       port: configAWSIoTDevice.port,
-  //       debug: configAWSIoTDevice.debug
-  // });
 
   // const createWallet = (account) => {
   //   const payment = cardanocliJs.addressKeyGen(account);
