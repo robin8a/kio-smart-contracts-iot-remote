@@ -171,16 +171,12 @@ function processTest(args) {
       
       if (obj.Transfer_Funds_Between_Wallets_From_UI !== undefined) { 
         console.log('## device.on message Transfer_Funds_Between_Wallets_From_UI');
-        debugger
         var walletNameOrigin = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_name_origin;
         console.log('## device.on message Wallet Name Origin: ', walletNameOrigin);
-        debugger
         var walletAddressDestination = obj.Transfer_Funds_Between_Wallets_From_UI[0].wallet_address_destination;
         console.log('## device.on message Wallet Address Destination: ', walletAddressDestination);
-        debugger
         var transactionAmount = parseFloat(obj.Transfer_Funds_Between_Wallets_From_UI[0].transaction_amount);
         console.log('## device.on message Transaction Amount: ', transactionAmount);
-        debugger
         // funded wallet
         const sender = cardanocliJs.wallet(walletNameOrigin);
         console.log(
@@ -188,10 +184,8 @@ function processTest(args) {
             cardanocliJs.toAda(sender.balance().value.lovelace) +
             " ADA"
         );
-        debugger
         //receiver address
         const receiver = walletAddressDestination;
-        debugger
         // create raw transaction
         let txInfo = {
           txIn: cardanocliJs.queryUtxo(sender.paymentAddr),
@@ -206,34 +200,27 @@ function processTest(args) {
           ],
           metadata: { 1: { cardanocliJs: "First Metadata from cardanocli-js" }},
         };
-        debugger
         let raw = cardanocliJs.transactionBuildRaw(txInfo);
-        debugger
         //calculate fee
         let fee = cardanocliJs.transactionCalculateMinFee({
           ...txInfo,
           txBody: raw,
           witnessCount: 1,
         });
-        debugger
         //pay the fee by subtracting it from the sender utxo
         txInfo.txOut[0].value.lovelace -= fee;
-        debugger
 
         //create final transaction
         let tx = cardanocliJs.transactionBuildRaw({ ...txInfo, fee });
-        debugger
 
         //sign the transaction
         let txSigned = cardanocliJs.transactionSign({
           txBody: tx,
           signingKeys: [sender.payment.skey],
         });
-        debugger
 
         //broadcast transaction
         let txHash = cardanocliJs.transactionSubmit(txSigned);
-        debugger
         console.log("TxHash: " + txHash);
 
         device.publish(configAWSIoTDevice.topic_server, JSON.stringify({txHash: txHash}));
@@ -284,7 +271,6 @@ function processTest(args) {
           pIpfsImageType, //pIpfsImageType
           pThumbnailImage, // pThumbnailImage
         )
-        debugger
         if (createdTimeLockedMintPolicyThenCreateMintAssetResult !== undefined) {
           console.log('## device.on message Create_Time_Locked_Mint_Policy_Then_Create_Mint_Asset_From_UI createdTimeLockedMintPolicyThenCreateMintAssetResult: ', JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
           device.publish(configAWSIoTDevice.topic_server, JSON.stringify(createdTimeLockedMintPolicyThenCreateMintAssetResult));
@@ -360,14 +346,11 @@ function processTest(args) {
             }
             await fs.writeFileSync(configLocalFiles.write_aws_s3_path+pFileName, data.Body)
             console.log('downloadFileFromAWSS3UploadIPFS: file downloaded successfully')
-            debugger
             var pathFileThumbnail = configLocalFiles.write_aws_s3_path+pFileName.split('.')[0]
             const resultcreateThumbnail = await createThumbnail(pFileName)
             console.log('downloadFileFromAWSS3UploadIPFS: resultcreateThumbnail: ', resultcreateThumbnail)
-            debugger
             const resultCompleteImage = await uploadFileToIPFS(configLocalFiles.write_aws_s3_path+pFileName)
             const resultThumbnailImage = await uploadFileToIPFS(pathFileThumbnail+'_thumbnail.png')
-            debugger
             console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultCompleteImage: ', resultCompleteImage)
             console.log('downloadFileFromAWSS3UploadIPFS: file uploaded resultThumbnailImage: ', resultThumbnailImage)
 
